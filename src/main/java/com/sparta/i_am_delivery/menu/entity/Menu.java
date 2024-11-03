@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(name = "menus")
 @NoArgsConstructor
 public class Menu extends TimeStamped {
     @Id

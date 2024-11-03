@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(name = "stores")
 @NoArgsConstructor
 public class Store extends TimeStamped {
     @Id

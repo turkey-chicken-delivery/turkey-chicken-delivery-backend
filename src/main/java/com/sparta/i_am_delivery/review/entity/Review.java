@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(name = "reviews")
 @NoArgsConstructor
 public class Review extends TimeStamped {
     @Id
