@@ -1,11 +1,14 @@
 package com.sparta.i_am_delivery.domain.user.entity;
 
 import com.sparta.i_am_delivery.common.entity.TimeStamped;
+import com.sparta.i_am_delivery.common.exception.CustomException;
+import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.user.enums.UserType;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
@@ -35,5 +38,15 @@ public class User extends TimeStamped {
     this.password = password;
     this.name = name;
     this.type = type;
+  }
+  
+  // 로그인 유저 유효성 처리
+  public void authenticate(String reqPassword, PasswordEncoder passwordEncoder) {
+    if (this.getDeletedAt() != null) {
+      throw new CustomException(ErrorCode.INACTIVE_MEMBER);
+    }
+    if (!passwordEncoder.matches(reqPassword, this.getPassword())) {
+      throw new CustomException(ErrorCode.LOGIN_FAILED);
+    }
   }
 }
