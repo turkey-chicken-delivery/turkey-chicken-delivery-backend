@@ -1,5 +1,6 @@
 package com.sparta.i_am_delivery.common.validator;
 
+import com.sparta.i_am_delivery.common.annotation.UserTypeConstraint;
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.user.enums.UserType;
