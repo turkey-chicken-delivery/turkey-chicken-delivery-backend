@@ -1,8 +1,8 @@
 package com.sparta.i_am_delivery.user.controller;
 
 import com.sparta.i_am_delivery.common.config.jwt.JwtHelper;
-import com.sparta.i_am_delivery.user.dto.UserSingUpRequestDto;
-import com.sparta.i_am_delivery.user.dto.UserSingUpResponseDto;
+import com.sparta.i_am_delivery.user.dto.request.UserSignUpRequestDto;
+import com.sparta.i_am_delivery.user.dto.response.UserSignUpResponseDto;
 import com.sparta.i_am_delivery.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -22,9 +22,9 @@ public class UserController {
   private final JwtHelper jwtHelper;
 
   @PostMapping
-  public ResponseEntity<UserSingUpResponseDto> singUp(
-      @Valid @RequestBody UserSingUpRequestDto userSingupRequestDto, HttpServletResponse response) {
-    UserSingUpResponseDto userSingupResponseDto = userService.singUp(userSingupRequestDto);
+  public ResponseEntity<UserSignUpResponseDto> signUp(
+          @Valid @RequestBody UserSignUpRequestDto userSingupRequestDto, HttpServletResponse response) {
+    UserSignUpResponseDto userSingupResponseDto = userService.signUp(userSingupRequestDto);
     String token =
         jwtHelper.generateAccessToken(
             userSingupResponseDto.getId(), userSingupResponseDto.getType());
