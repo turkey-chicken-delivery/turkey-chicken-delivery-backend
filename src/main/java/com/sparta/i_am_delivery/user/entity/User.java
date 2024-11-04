@@ -27,13 +27,13 @@ public class User extends TimeStamped {
 
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
-  private UserType userType;
+  private UserType type;
 
   @Builder
-  public User(String email, String password, String name, UserType userType) {
+  public User(String email, String password, String name, UserType type) {
     this.email = email;
     this.password = password;
     this.name = name;
-    this.userType = userType;
+    this.type = type;
   }
 }

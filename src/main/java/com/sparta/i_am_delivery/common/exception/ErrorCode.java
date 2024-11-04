@@ -11,8 +11,9 @@ public enum ErrorCode {
 
     // 회원 관련 에러 코드
     USER_NOT_FOUND("USER_NOT_FOUND", "유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-    USERNAME_DUPLICATED("USERNAME_DUPLICATED", "이미 사용 중인 유저명입니다.", HttpStatus.BAD_REQUEST),
-    EMAIL_DUPLICATED("EMAIL_DUPLICATED", "이미 사용 중인 이메일입니다.", HttpStatus.BAD_REQUEST),
+    USERNAME_DUPLICATED("USERNAME_DUPLICATED", "이미 사용 중인 유저명입니다.", HttpStatus.CONFLICT),
+    EMAIL_DUPLICATED("EMAIL_DUPLICATED", "이미 사용 중인 이메일입니다.", HttpStatus.CONFLICT),
+    INVALID_USER_TYPE("INVALID_USER_TYPE","올바른 유저 타입을 입력해주세요.", HttpStatus.BAD_REQUEST),
 
     // 가게 관련 에러 코드
     STORE_NOT_FOUND("STORE_NOT_FOUND", "가게를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
