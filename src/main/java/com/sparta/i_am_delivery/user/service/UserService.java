@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
-  private final JwtHelper jwtHelper;
 
   @Transactional
   public UserSingUpResponseDto singUp(UserSingUpRequestDto userSingupRequestDto) {
