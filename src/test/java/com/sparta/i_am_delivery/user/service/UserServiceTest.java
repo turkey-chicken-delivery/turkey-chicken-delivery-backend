@@ -59,7 +59,7 @@ class UserServiceTest {
   @DisplayName("중복 이메일 회원가입")
   public void testSignUpWithDuplicateEmail() {
     // Given
-    String duplicateEmail = "test@example.com";
+    String duplicateEmail = "example@example.com";
     UserSignUpRequestDto req =
             UserSignUpRequestDto.builder()
                     .email(duplicateEmail)
