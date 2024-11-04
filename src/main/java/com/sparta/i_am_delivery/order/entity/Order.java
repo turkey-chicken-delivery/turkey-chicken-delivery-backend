@@ -1,6 +1,7 @@
 package com.sparta.i_am_delivery.order.entity;
 
 import com.sparta.i_am_delivery.common.entity.TimeStamped;
+import com.sparta.i_am_delivery.order.entity.enums.OrderStatus;
 import com.sparta.i_am_delivery.user.entity.User;
 import com.sparta.i_am_delivery.store.entity.Store;
 import jakarta.persistence.*;
@@ -26,6 +27,12 @@ public class Order extends TimeStamped {
     private Store store;
 
     private Double totalPrice;
+
+    private Double quantity;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
 
     @Builder
     public Order(User user, Store store, Double totalPrice) {
