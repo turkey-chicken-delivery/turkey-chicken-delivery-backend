@@ -8,8 +8,10 @@ import lombok.Setter;
 @Setter
 public class ReviewRequestDto {
 
+  private Long orderId;
+
   @NotBlank(message = "리뷰 내용은 필수입니다.")
-  private String conmment;
+  private String comment;
 
   private Long star;
 }

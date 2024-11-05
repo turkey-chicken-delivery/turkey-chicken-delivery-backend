@@ -26,19 +26,21 @@ public class ReviewService {
   private final ReviewRepository reviewRepository;
 
   @Transactional
-  public ReviewCreationResponseDto createReview(User user, Long storeId, Long orderId,
+  public ReviewCreationResponseDto createReview(User user, Long storeId,
       ReviewRequestDto reviewRequestDto) {
 
     Store store = storeRepository.findById(storeId)
         .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
-    Order order = orderRepository.findByIdAndStatus(orderId, OrderStatus.COMPLETED)
+    Order order = orderRepository.findByIdAndStatus(reviewRequestDto.getOrderId(),
+            OrderStatus.COMPLETED)
         .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_COMPLETED));
 
-    if (reviewRepository.findByOrderId(orderId).isPresent()) {
+    if (reviewRepository.findByOrderId(order.getId()).isPresent()) {
       throw new CustomException(ErrorCode.REVIEW_ALREADY_EXISTS);
     }
+
     Review review = new Review();
-    review.createReview(user, store, order, reviewRequestDto.getConmment(),
+    review.createReview(user, store, order, reviewRequestDto.getComment(),
         reviewRequestDto.getStar());
     reviewRepository.save(review);
 
