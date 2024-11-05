@@ -1,5 +1,6 @@
-package com.sparta.i_am_delivery.common.validator;
+package com.sparta.i_am_delivery.common.annotation;
 
+import com.sparta.i_am_delivery.common.validator.UserTypeValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

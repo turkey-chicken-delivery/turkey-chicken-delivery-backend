@@ -1,17 +1,27 @@
 package com.sparta.i_am_delivery.common.config.jwt;
 
+import com.sparta.i_am_delivery.common.exception.CustomException;
+import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.user.enums.UserType;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Slf4j(topic = "JWT Helper : ")
 @Component
 public class JwtHelper {
   @Value("${jwt.secret.key}")
@@ -22,6 +32,7 @@ public class JwtHelper {
 
   private Key key;
 
+  private static final String AUTHORIZATION_HEADER = "Authorization";
   private static final String BEARER_PREFIX = "Bearer ";
 
   @PostConstruct
@@ -29,19 +40,46 @@ public class JwtHelper {
     key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
   }
 
-  public String generateAccessToken(Long userId, UserType userType) {
+  public String generateAccessToken(Long userId, String email, UserType userType) {
     return BEARER_PREFIX
         + Jwts.builder()
             .setSubject(userId.toString())
-            .claim("userType",userType)
+            .claim("email", email)
+            .claim("userType", userType)
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .setExpiration(new Date(System.currentTimeMillis() + expiresIn))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
   }
 
-  // HttpServletResponse Header 에 토큰삽입 후 전달.
-  public void addToken(HttpServletResponse response, String token) {
-    response.addHeader("Authorization", token);
+  // HttpServletResponse Cookie 에 토큰삽입 후 전달.
+  public void addTokenToCookie(HttpServletResponse response, String token) {
+        try {
+          token = URLEncoder.encode(token, "utf-8").replaceAll("\\+", "%20");
+
+          Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token);
+          cookie.setPath("/");
+          response.addCookie(cookie);
+        } catch (UnsupportedEncodingException e) {
+          log.error(e.getMessage());
+          throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+  }
+
+  public void validate(String accessToken) {
+    try {
+      Jwts.parserBuilder()
+          .setSigningKey(key)
+          .build()
+          .parseClaimsJws(accessToken)
+          .getBody()
+          .getSubject();
+    } catch (JwtException e) {
+      throw new CustomException(ErrorCode.INVALID_ACCESS_TOKEN);
+    }
+  }
+
+  public Claims getUserInfoFromToken(String token) {
+    return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
   }
 }
