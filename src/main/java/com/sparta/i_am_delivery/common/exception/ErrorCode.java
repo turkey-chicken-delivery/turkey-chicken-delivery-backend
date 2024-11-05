@@ -28,9 +28,14 @@ public enum ErrorCode {
 
   // 주문 관련 에러 코드
   ORDER_NOT_FOUND("ORDER_NOT_FOUND", "주문을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  ORDER_NOT_COMPLETED("ORDER_NOT_COMPLETED", "배달이 완료되지 않았습니다.", HttpStatus.BAD_REQUEST),
 
   // 리뷰 관련 에러 코드
   REVIEW_NOT_FOUND("REVIEW_NOT_FOUND", "리뷰를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  INVALID_STAR_RATING("INVALID_STAR_RATING", "별점은 1에서 5 사이여야 합니다.", HttpStatus.BAD_REQUEST),
+  INVALID_STORE_OR_ORDER("INVALID_STORE_OR_ORDER", "유효하지 않은 가게 또는 주문입니다.", HttpStatus.BAD_REQUEST),
+  REVIEW_ALREADY_EXISTS("REVIEW_ALREADY_EXISTS", "이미 리뷰가 존재합니다.", HttpStatus.CONFLICT),
+
 
   // 댓글 관련 에러 코드
   COMMENT_NOT_FOUND("COMMENT_NOT_FOUND", "댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
