@@ -10,7 +10,6 @@ import com.sparta.i_am_delivery.domain.review.repository.ReviewRepository;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
-import com.sparta.i_am_delivery.domain.user.repository.UserRepository;
 import com.sparta.i_am_delivery.review.dto.request.ReviewRequestDto;
 import com.sparta.i_am_delivery.review.dto.response.ReviewCreationResponseDto;
 import jakarta.transaction.Transactional;
@@ -23,7 +22,6 @@ public class ReviewService {
 
   private final StoreRepository storeRepository;
   private final OrderRepository orderRepository;
-  private final UserRepository userRepository;
   private final ReviewRepository reviewRepository;
 
   @Transactional
