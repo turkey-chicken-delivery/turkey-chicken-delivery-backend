@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,12 +31,11 @@ public class Menu extends TimeStamped {
   @Column(nullable = false)
   private String name;
 
-  private Double menuPrice;
+  private Long price;
 
-  @Builder
-  public Menu(Store store, String name, Double menuPrice) {
+  public Menu(Store store, String name, Long price) {
     this.store = store;
     this.name = name;
-    this.menuPrice = menuPrice;
+    this.price = price;
   }
 }
