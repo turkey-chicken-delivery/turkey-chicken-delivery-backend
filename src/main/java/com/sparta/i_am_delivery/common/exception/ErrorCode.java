@@ -21,7 +21,7 @@ public enum ErrorCode {
   INVALID_ACCESS_TOKEN("INVALID_ACCESS_TOKEN", "유효하지 않은 로그인 토큰 입니다.", HttpStatus.UNAUTHORIZED),
   UNAUTHORIZED_ACCESS("UNAUTHORIZED_ACCESS", "본인이 아닌 사용자입니다.", HttpStatus.FORBIDDEN),
   INVALID_PASSWORD("INVALID_PASSWORD", "현재 사용중인 비밀 번호입니다.", HttpStatus.BAD_REQUEST),
-  PASSWORD_MISMATCH("PASSWORD_MISMATCH", "현재 비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED),
+  PASSWORD_MISMATCH("PASSWORD_MISMATCH","현재 비밀번호가 일치하지 않습니다.",HttpStatus.UNAUTHORIZED),
 
   // 가게 관련 에러 코드
   STORE_NOT_FOUND("STORE_NOT_FOUND", "가게를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
@@ -31,7 +31,7 @@ public enum ErrorCode {
   STORE_CLOSED("STORE_CLOSED", "가게가 현재 영업 중이 아닙니다.", HttpStatus.BAD_REQUEST),
   MIN_ORDER_PRICE_NOT_MET("MIN_ORDER_PRICE_NOT_MET", "최소 주문 금액을 만족하지 않습니다.", HttpStatus.BAD_REQUEST),
   NO_STORE_PERMISSION("NO_STORE_PERMISSION", "가게에 대한 권한이 없습니다.", HttpStatus.FORBIDDEN),
-  INVALID_OWNER("INVALID_OWNER", "사장님이 아니면 가게를 생성 할 수 없습니다.", HttpStatus.FORBIDDEN),
+
 
 
   // 메뉴 관련 에러 코드
