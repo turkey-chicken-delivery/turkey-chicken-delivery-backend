@@ -44,7 +44,7 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
-  @PutMapping("/{id}")
+  @PutMapping("/{id}/name")
   public ResponseEntity<UserUpdateNameResponseDto> updateUserName(
       @AuthUser User user,
       @PathVariable Long id,
@@ -60,6 +60,6 @@ public class UserController {
       @PathVariable Long id,
       @Valid @RequestBody UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
     userService.updatePassword(user, id, userUpdatePasswordRequestDto);
-    return ResponseEntity.status(HttpStatus.OK).build();
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }
