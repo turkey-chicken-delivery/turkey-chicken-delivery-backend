@@ -25,12 +25,12 @@ public class GlobalExceptionHandler {
     }
 
     // 기타 예외 처리
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
-        ErrorResponse response = new ErrorResponse(
-                ErrorCode.INTERNAL_SERVER_ERROR.getCode(),
-                ErrorCode.INTERNAL_SERVER_ERROR.getMessage()
-        );
-        return new ResponseEntity<>(response, ErrorCode.INTERNAL_SERVER_ERROR.getStatus());
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
+//        ErrorResponse response = new ErrorResponse(
+//                ErrorCode.INTERNAL_SERVER_ERROR.getCode(),
+//                ErrorCode.INTERNAL_SERVER_ERROR.getMessage()
+//        );
+//        return new ResponseEntity<>(response, ErrorCode.INTERNAL_SERVER_ERROR.getStatus());
+//    }
 }

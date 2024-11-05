@@ -6,7 +6,9 @@ import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.domain.user.repository.UserRepository;
 import com.sparta.i_am_delivery.user.dto.request.UserSignUpRequestDto;
+import com.sparta.i_am_delivery.user.dto.request.UserUpdatePasswordRequestDto;
 import com.sparta.i_am_delivery.user.dto.response.UserSignUpResponseDto;
+import com.sparta.i_am_delivery.user.dto.response.UserUpdateNameResponseDto;
 import com.sparta.i_am_delivery.user.enums.UserType;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
@@ -47,6 +49,28 @@ public class UserService {
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     user.authenticate(password, passwordEncoder);
     return jwtHelper.generateAccessToken(user.getId(), user.getEmail(), user.getType());
+  }
+
+  @Transactional
+  public UserUpdateNameResponseDto updateName(User user, Long id, String name) {
+    user.validateUserIdentity(id);
+    if (userRepository.existsByName(name)) {
+      throw new CustomException(ErrorCode.USERNAME_DUPLICATED);
+    }
+    user.updateName(name);
+    userRepository.save(user);
+    return UserUpdateNameResponseDto.builder().id(user.getId()).name(user.getName()).build();
+  }
+
+  @Transactional
+  public void updatePassword(
+      User user, Long id, UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
+    user.updatePassword(
+        id,
+        userUpdatePasswordRequestDto.getCurrentPassword(),
+        userUpdatePasswordRequestDto.getChangePassword(),
+        passwordEncoder);
+    userRepository.save(user);
   }
 
   private void isValidateUserUniqueness(String email, String name) {

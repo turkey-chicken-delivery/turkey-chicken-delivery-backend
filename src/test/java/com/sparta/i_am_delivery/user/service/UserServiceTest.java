@@ -3,7 +3,7 @@ package com.sparta.i_am_delivery.user.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.sparta.i_am_delivery.common.config.security.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.user.dto.request.UserSignUpRequestDto;
