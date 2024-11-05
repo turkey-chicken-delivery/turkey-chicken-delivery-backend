@@ -1,6 +1,8 @@
 package com.sparta.i_am_delivery.domain.store.entity;
 
 import com.sparta.i_am_delivery.common.entity.TimeStamped;
+import com.sparta.i_am_delivery.common.exception.CustomException;
+import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.store.dto.request.StoreUpdateRequestDto;
 import jakarta.persistence.*;
@@ -27,18 +29,19 @@ public class Store extends TimeStamped {
   @Column(nullable = false)
   private String name;
 
-    private LocalTime openTime;
-    private LocalTime closeTime;
-    private Long minimumPrice;
+  private LocalTime openTime;
+  private LocalTime closeTime;
+  private Long minimumPrice;
 
-    @Builder
-    public Store(User owner, String name, LocalTime openTime, LocalTime closeTime, Long minimumPrice) {
-        this.owner = owner;
-        this.name = name;
-        this.openTime = openTime;
-        this.closeTime = closeTime;
-        this.minimumPrice = minimumPrice;
-    }
+  @Builder
+  public Store(
+      User owner, String name, LocalTime openTime, LocalTime closeTime, Long minimumPrice) {
+    this.owner = owner;
+    this.name = name;
+    this.openTime = openTime;
+    this.closeTime = closeTime;
+    this.minimumPrice = minimumPrice;
+  }
 
 
     public void update(StoreUpdateRequestDto requestDto) {
@@ -47,4 +50,9 @@ public class Store extends TimeStamped {
         this.minimumPrice = requestDto.getMinimumPrice();
 
     }
+  public void validateOwner(Long userId) {
+    if (this.owner.getId().equals(userId)) {
+      throw new CustomException(ErrorCode.STORE_OWNER_ACTION_NOT_ALLOWED);
+    }
+  }
 }

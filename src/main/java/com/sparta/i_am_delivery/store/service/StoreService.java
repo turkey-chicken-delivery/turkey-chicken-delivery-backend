@@ -59,6 +59,7 @@ public class StoreService {
   }
 
 
+  @Transactional
   public StoreUpdateResponseDto updateStore(Long id, StoreUpdateRequestDto requestDto, User user) {
 
     Store updateStore = storeRepository.findById(id)
