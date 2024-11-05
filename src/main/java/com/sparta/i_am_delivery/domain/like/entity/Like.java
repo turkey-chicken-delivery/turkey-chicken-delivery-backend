@@ -13,21 +13,22 @@ import lombok.NoArgsConstructor;
 @Table(name = "likes")
 @NoArgsConstructor
 public class Like extends TimeStamped {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", nullable = false)
-    private Store store;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-    @Builder
-    public Like(User user, Store store) {
-        this.user = user;
-        this.store = store;
-    }
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "store_id", nullable = false)
+  private Store store;
+
+  @Builder
+  public Like(User user, Store store) {
+    this.user = user;
+    this.store = store;
+  }
 }

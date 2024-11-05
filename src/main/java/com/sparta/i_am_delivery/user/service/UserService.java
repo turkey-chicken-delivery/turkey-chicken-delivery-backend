@@ -1,16 +1,17 @@
 package com.sparta.i_am_delivery.user.service;
 
-import com.sparta.i_am_delivery.common.config.security.PasswordEncoder;
+import com.sparta.i_am_delivery.common.config.jwt.JwtHelper;
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
+import com.sparta.i_am_delivery.domain.user.entity.User;
+import com.sparta.i_am_delivery.domain.user.repository.UserRepository;
 import com.sparta.i_am_delivery.user.dto.request.UserSignUpRequestDto;
 import com.sparta.i_am_delivery.user.dto.response.UserSignUpResponseDto;
-import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.user.enums.UserType;
-import com.sparta.i_am_delivery.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final JwtHelper jwtHelper;
 
   @Transactional
   public UserSignUpResponseDto signUp(UserSignUpRequestDto userSingUpRequestDto) {
@@ -36,6 +38,15 @@ public class UserService {
         .name(user.getName())
         .type(user.getType())
         .build();
+  }
+
+  public String logIn(String email, String password) {
+    User user =
+        userRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+    user.authenticate(password, passwordEncoder);
+    return jwtHelper.generateAccessToken(user.getId(), user.getEmail(), user.getType());
   }
 
   private void isValidateUserUniqueness(String email, String name) {
