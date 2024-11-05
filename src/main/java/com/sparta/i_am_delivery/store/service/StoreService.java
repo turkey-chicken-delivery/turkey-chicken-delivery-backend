@@ -64,7 +64,7 @@ public class StoreService {
     Store updateStore = storeRepository.findById(id)
         .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
-    if (updateStore.getOwner().getId() != user.getId()) {
+    if (!updateStore.getOwner().getId().equals(user.getId())) {
       throw new CustomException(ErrorCode.INVALID_OWNER);
     }
     updateStore.update(requestDto);
