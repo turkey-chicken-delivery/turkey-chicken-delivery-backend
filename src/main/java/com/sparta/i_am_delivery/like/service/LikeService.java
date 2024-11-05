@@ -40,10 +40,6 @@ public class LikeService {
             .closeTime(store.getCloseTime())
             .minimumPrice(store.getMinimumPrice())
             .build();
-    return LikeAddResponseDto.builder()
-        .id(like.getId())
-        .storeInfo(storeInfo)
-        .userId(user.getId())
-        .build();
+    return LikeAddResponseDto.builder().id(like.getId()).storeInfo(storeInfo).build();
   }
 }
