@@ -15,10 +15,9 @@ import com.sparta.i_am_delivery.order.dto.request.OrderRequestDto;
 import com.sparta.i_am_delivery.order.dto.response.OrderResponseDto;
 import com.sparta.i_am_delivery.order.enums.OrderStatus;
 import jakarta.transaction.Transactional;
+import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +63,7 @@ public class OrderService {
     Long totalPrice = menu.getPrice() * quantity;
 
     // 최소 주문 금액 확인
-    if (totalPrice < store.getMinOrderPrice()) {
+    if (totalPrice < store.getMinimumPrice()) {
       throw new CustomException(ErrorCode.MIN_ORDER_PRICE_NOT_MET);
     }
 
@@ -94,7 +93,8 @@ public class OrderService {
   }
 
   @Transactional
-  public OrderResponseDto updateOrderStatus(Long ownerId, Long storeId, Long orderId, OrderStatusRequestDto orderStatusRequestDto) {
+  public OrderResponseDto updateOrderStatus(Long ownerId, Long storeId, Long orderId,
+      OrderStatusRequestDto orderStatusRequestDto) {
     // 가게 소유자 확인
     Store store = storeRepository.findById(storeId)
         .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));

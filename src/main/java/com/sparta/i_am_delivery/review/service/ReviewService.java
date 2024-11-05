@@ -13,6 +13,7 @@ import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.order.enums.OrderStatus;
 import com.sparta.i_am_delivery.review.dto.request.ReviewRequestDto;
 import com.sparta.i_am_delivery.review.dto.response.ReviewCreationResponseDto;
+import com.sparta.i_am_delivery.review.dto.response.ReviewUpdateResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,12 @@ public class ReviewService {
   private final ReviewRepository reviewRepository;
 
   @Transactional
-  public ReviewCreationResponseDto createReview(User user, Long storeId,
+  public ReviewCreationResponseDto createReview(User user, Long storeId, Long orderId,
       ReviewRequestDto reviewRequestDto) {
 
     Store store = storeRepository.findById(storeId)
         .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
-    Order order = orderRepository.findByIdAndStatus(reviewRequestDto.getOrderId(),
+    Order order = orderRepository.findByIdAndStatus(orderId,
             OrderStatus.COMPLETED)
         .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_COMPLETED));
 
@@ -45,5 +46,17 @@ public class ReviewService {
     reviewRepository.save(review);
 
     return new ReviewCreationResponseDto(review);
+  }
+
+  @Transactional
+  public ReviewUpdateResponseDto updateReview(User user, Long reviewId,
+      ReviewRequestDto reviewRequestDto) {
+
+    // 리뷰 존재 여부 및 작성자 확인
+    Review review = reviewRepository.findByIdAndUserId(reviewId, user.getId())
+        .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));  // 리뷰 존재 유무 확인
+
+    review.updateReview(reviewRequestDto.getComment(), reviewRequestDto.getStar());
+    return new ReviewUpdateResponseDto(review);
   }
 }
