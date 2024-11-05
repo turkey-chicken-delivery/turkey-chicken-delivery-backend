@@ -43,7 +43,7 @@ public class Order extends TimeStamped {
     private Review review;
 
     // 댓글
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "order_id")
     private List<Comment> comments = new ArrayList<>();
 
