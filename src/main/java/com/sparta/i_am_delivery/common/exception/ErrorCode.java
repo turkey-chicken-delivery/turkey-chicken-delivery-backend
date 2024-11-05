@@ -19,6 +19,9 @@ public enum ErrorCode {
   NOT_FOUND_ACCESS_TOKEN(
       "NOT_FOUND_ACCESS_TOKEN", "접근할 수 없습니다. 로그인 해주세요.", HttpStatus.UNAUTHORIZED),
   INVALID_ACCESS_TOKEN("INVALID_ACCESS_TOKEN", "유효하지 않은 로그인 토큰 입니다.", HttpStatus.UNAUTHORIZED),
+  UNAUTHORIZED_ACCESS("UNAUTHORIZED_ACCESS", "본인이 아닌 사용자입니다.", HttpStatus.FORBIDDEN),
+  INVALID_PASSWORD("INVALID_PASSWORD", "현재 사용중인 비밀 번호입니다.", HttpStatus.BAD_REQUEST),
+  PASSWORD_MISMATCH("PASSWORD_MISMATCH","현재 비밀번호가 일치하지 않습니다.",HttpStatus.UNAUTHORIZED),
 
   // 가게 관련 에러 코드
   STORE_NOT_FOUND("STORE_NOT_FOUND", "가게를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),

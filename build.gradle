@@ -40,7 +40,11 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'at.favre.lib:bcrypt:0.10.2'
     implementation 'mysql:mysql-connector-java:8.0.33'
+    // JUnit 5
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3' // 최신 버전으로 업데이트하세요
 
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:5.4.0'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

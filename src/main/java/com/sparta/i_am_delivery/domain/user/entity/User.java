@@ -46,8 +46,11 @@ public class User extends TimeStamped {
     this.name = name;
     this.type = type;
   }
+public void updateName(String name) {
+    this.name = name;
+  }
 
-  // 로그인 유저 유효성 처리
+  // 로그인 유효성 처리
   public void authenticate(String reqPassword, PasswordEncoder passwordEncoder) {
     if (this.getDeletedAt() != null) {
       throw new CustomException(ErrorCode.INACTIVE_MEMBER);
@@ -55,5 +58,27 @@ public class User extends TimeStamped {
     if (!passwordEncoder.matches(reqPassword, this.getPassword())) {
       throw new CustomException(ErrorCode.LOGIN_FAILED);
     }
+  }
+
+  // 로그인 유저와 현재 유저 일치 여부 확인
+  public void validateUserIdentity(Long reqUserId) {
+    if (!this.id.equals(reqUserId)) {
+      throw new CustomException(ErrorCode.UNAUTHORIZED_ACCESS);
+    }
+  }
+
+  public void updatePassword(
+      Long reqUserId,
+      String currentPassword,
+      String changePassword,
+      PasswordEncoder passwordEncoder) {
+    validateUserIdentity(reqUserId);
+    if (!passwordEncoder.matches(currentPassword, this.getPassword())) {
+      throw new CustomException(ErrorCode.PASSWORD_MISMATCH);
+    }
+    if (passwordEncoder.matches(changePassword, this.getPassword())) {
+      throw new CustomException(ErrorCode.INVALID_PASSWORD);
+    }
+    this.password = passwordEncoder.encode(changePassword);
   }
 }
