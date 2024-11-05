@@ -1,7 +1,7 @@
 package com.sparta.i_am_delivery.store.controller;
 
 import com.sparta.i_am_delivery.domain.user.entity.User;
-import com.sparta.i_am_delivery.store.dto.StoreRequestDto;
+import com.sparta.i_am_delivery.store.dto.request.StoreRequestDto;
 import com.sparta.i_am_delivery.store.dto.StoreResponseDto;
 import com.sparta.i_am_delivery.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
