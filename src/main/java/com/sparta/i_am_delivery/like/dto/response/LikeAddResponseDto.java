@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LikeAddResponseDto {
   private Long id;
-  private Long userId;
   private StoreInfo storeInfo;
 
   @Builder
-  public LikeAddResponseDto(Long id, StoreInfo storeInfo, Long userId) {
+  public LikeAddResponseDto(Long id, StoreInfo storeInfo) {
     this.id = id;
     this.storeInfo = storeInfo;
-    this.userId = userId;
   }
 }
