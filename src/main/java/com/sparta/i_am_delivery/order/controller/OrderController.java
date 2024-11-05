@@ -1,7 +1,9 @@
 package com.sparta.i_am_delivery.order.controller;
 
+import com.sparta.i_am_delivery.common.annotation.AuthUser;
+import com.sparta.i_am_delivery.domain.user.entity.User;
+import com.sparta.i_am_delivery.order.dto.orderstatus.OrderStatusRequestDto;
 import com.sparta.i_am_delivery.order.dto.request.OrderRequestDto;
-import com.sparta.i_am_delivery.order.dto.request.OrderStatusRequestDto;
 import com.sparta.i_am_delivery.order.dto.response.OrderResponseDto;
 import com.sparta.i_am_delivery.order.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,7 +11,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/stores")
@@ -23,10 +30,11 @@ public class OrderController {
   public ResponseEntity<OrderResponseDto> createOrder(
       @PathVariable Long storeId,
       @Valid @RequestBody OrderRequestDto orderRequestDto,
-      HttpServletRequest request) {
+      @AuthUser User user
+  ) {
 
     // 로그인된 userId를 가져오기
-    Long userId = (Long) request.getAttribute("userId");
+    Long userId = user.getId();
 
     OrderResponseDto orderResponseDto = orderService.createOrder(userId, storeId, orderRequestDto);
 
@@ -44,7 +52,8 @@ public class OrderController {
     // 사장님 인증 및 권한 체크 로직 필요 (예시로 ownerId를 가져오는 것으로 가정)
     Long ownerId = (Long) request.getAttribute("ownerId");
 
-    OrderResponseDto orderResponseDto = orderService.updateOrderStatus(ownerId, storeId, orderId, orderStatusRequestDto);
+    OrderResponseDto orderResponseDto = orderService.updateOrderStatus(ownerId, storeId, orderId,
+        orderStatusRequestDto);
 
     return ResponseEntity.ok(orderResponseDto);
   }
