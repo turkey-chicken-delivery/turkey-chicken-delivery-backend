@@ -56,4 +56,9 @@ public class Review extends TimeStamped {
     this.comment = comment;
     this.star = star;
   }
+
+  public void updateReview(String comment, Long star) {
+    this.comment = comment;
+    this.star = star;
+  }
 }
