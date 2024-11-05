@@ -28,6 +28,7 @@ public enum ErrorCode {
 
   // 주문 관련 에러 코드
   ORDER_NOT_FOUND("ORDER_NOT_FOUND", "주문을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  ORDER_NOT_COMPLETED("ORDER_NOT_COMPLETED", "배달이 완료되지 않았습니다.", HttpStatus.BAD_REQUEST),
 
   // 리뷰 관련 에러 코드
   REVIEW_NOT_FOUND("REVIEW_NOT_FOUND", "리뷰를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
