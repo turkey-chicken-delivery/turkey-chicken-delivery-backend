@@ -59,9 +59,6 @@ public class Order extends TimeStamped {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-//    @Column(nullable = false)
-//    private OrderStatus status;
-
     @Builder
     public Order(User user, Store store, Menu menu, Integer quantity, Long totalPrice, OrderStatus status) {
         this.user = user;
