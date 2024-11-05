@@ -2,6 +2,7 @@ package com.sparta.i_am_delivery.domain.store.entity;
 
 import com.sparta.i_am_delivery.common.entity.TimeStamped;
 import com.sparta.i_am_delivery.domain.user.entity.User;
+import com.sparta.i_am_delivery.store.dto.request.StoreUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,5 +41,10 @@ public class Store extends TimeStamped {
     }
 
 
+    public void update(StoreUpdateRequestDto requestDto) {
+        this.openTime = requestDto.getOpenTime();
+        this.closeTime = requestDto.getCloseTime();
+        this.minimumPrice = requestDto.getMinimumPrice();
 
+    }
 }
