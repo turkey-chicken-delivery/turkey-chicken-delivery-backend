@@ -1,8 +1,8 @@
 package com.sparta.i_am_delivery.common.exception;
 
+import org.springframework.http.HttpStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
@@ -20,15 +20,22 @@ public enum ErrorCode {
       "NOT_FOUND_ACCESS_TOKEN", "접근할 수 없습니다. 로그인 해주세요.", HttpStatus.UNAUTHORIZED),
   INVALID_ACCESS_TOKEN("INVALID_ACCESS_TOKEN", "유효하지 않은 로그인 토큰 입니다.", HttpStatus.UNAUTHORIZED),
 
-  // 가게 관련 에러 코드
-  STORE_NOT_FOUND("STORE_NOT_FOUND", "가게를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    // 가게 관련 에러 코드
+    STORE_NOT_FOUND("STORE_NOT_FOUND", "가게를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    STORE_CLOSED("STORE_CLOSED", "가게가 현재 영업 중이 아닙니다.", HttpStatus.BAD_REQUEST),
+    MIN_ORDER_PRICE_NOT_MET("MIN_ORDER_PRICE_NOT_MET", "최소 주문 금액을 만족하지 않습니다.", HttpStatus.BAD_REQUEST),
+    NO_STORE_PERMISSION("NO_STORE_PERMISSION", "가게에 대한 권한이 없습니다.", HttpStatus.FORBIDDEN),
 
-  // 메뉴 관련 에러 코드
-  MENU_NOT_FOUND("MENU_NOT_FOUND", "메뉴를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    // 메뉴 관련 에러 코드
+    MENU_NOT_FOUND("MENU_NOT_FOUND", "메뉴를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    MENU_NOT_FOUND_IN_STORE("MENU_NOT_FOUND_IN_STORE", "해당 가게에서 주문할 수 없는 메뉴입니다.", HttpStatus.BAD_REQUEST), // 유효성
 
-  // 주문 관련 에러 코드
-  ORDER_NOT_FOUND("ORDER_NOT_FOUND", "주문을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-  ORDER_NOT_COMPLETED("ORDER_NOT_COMPLETED", "배달이 완료되지 않았습니다.", HttpStatus.BAD_REQUEST),
+    // 주문 관련 에러 코드
+    ORDER_NOT_FOUND("ORDER_NOT_FOUND", "주문을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    ORDER_NOT_COMPLETED("ORDER_NOT_COMPLETED", "배달이 완료되지 않았습니다.", HttpStatus.BAD_REQUEST),
+    ORDER_NOT_FOUND_IN_STORE("ORDER_NOT_FOUND_IN_STORE", "해당 가게의 주문이 아닙니다.", HttpStatus.NOT_FOUND),
+    INVALID_ORDER_STATUS_TRANSITION("INVALID_ORDER_STATUS_TRANSITION", "유효하지 않은 주문 상태 변경입니다.", HttpStatus.BAD_REQUEST),
+    INVALID_QUANTITY("INVALID_QUANTITY", "수량은 1 이상의 양수여야 합니다.", HttpStatus.BAD_REQUEST),
 
   // 리뷰 관련 에러 코드
   REVIEW_NOT_FOUND("REVIEW_NOT_FOUND", "리뷰를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
