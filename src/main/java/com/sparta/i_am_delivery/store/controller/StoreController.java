@@ -1,9 +1,11 @@
 package com.sparta.i_am_delivery.store.controller;
 
+import com.sparta.i_am_delivery.common.annotation.AuthUser;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.store.dto.request.StoreRequestDto;
-import com.sparta.i_am_delivery.store.dto.StoreResponseDto;
+import com.sparta.i_am_delivery.store.dto.response.StoreResponseDto;
 import com.sparta.i_am_delivery.store.service.StoreService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/stores")
 @RequiredArgsConstructor
 public class StoreController {
     private  final StoreService storeService;
 
-    @PostMapping("/api/stores")
-    public ResponseEntity<StoreResponseDto> createStore (@RequestBody StoreRequestDto requestDto, User user) {
+    @PostMapping()
+    public ResponseEntity<StoreResponseDto> createStore (@Valid @RequestBody StoreRequestDto requestDto, @AuthUser User user) {
 
         StoreResponseDto responseDto = storeService.createStore (requestDto,user);
 

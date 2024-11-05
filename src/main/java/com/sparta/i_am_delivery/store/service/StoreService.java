@@ -1,12 +1,16 @@
 package com.sparta.i_am_delivery.store.service;
 
-import com.sparta.i_am_delivery.domain.user.entity.User;
-import com.sparta.i_am_delivery.store.dto.request.StoreRequestDto;
-import com.sparta.i_am_delivery.store.dto.StoreResponseDto;
+import com.sparta.i_am_delivery.common.exception.CustomException;
+import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
-import com.sparta.i_am_delivery.store.repository.StoreRepository;
+import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
+import com.sparta.i_am_delivery.domain.user.entity.User;
+import com.sparta.i_am_delivery.store.dto.response.StoreResponseDto;
+import com.sparta.i_am_delivery.store.dto.request.StoreRequestDto;
+import com.sparta.i_am_delivery.user.enums.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 
@@ -17,10 +21,11 @@ public class StoreService {
     private final StoreRepository storeRepository;
 
 
+    @Transactional
     public StoreResponseDto createStore(StoreRequestDto requestDto, User user){
 
-        if (!user.getType().equals("OWNER")){
-            throw new IllegalArgumentException("사장님 권한이 있는 유저만 가게를 생성할 수 있습니다.");
+        if (user.getType() != UserType.OWNER){
+            throw new CustomException(ErrorCode.INVALID_OWNER);
         }
 
         int storeCount = storeRepository.countByOwner(user);
@@ -29,15 +34,14 @@ public class StoreService {
         }
 
 
-        validateStoreTimes(requestDto.getOpenTime(), requestDto.getCloseTime());
+       validateStoreTimes(requestDto.getOpenTime(), requestDto.getCloseTime());
 
-        validateMinimumPrice(requestDto.getMinimumPrice());
 
 
         Store store = Store.builder()
                 .owner(user)
                 .name(requestDto.getName())
-                .openTime(requestDto.getOpenTime())
+               .openTime(requestDto.getOpenTime())
                 .closeTime(requestDto.getCloseTime())
                 .minimumPrice(requestDto.getMinimumPrice())
                 .build();
@@ -53,10 +57,5 @@ public class StoreService {
         }
     }
 
-    private void validateMinimumPrice(Long minimumPrice) {
-        if (minimumPrice == null || minimumPrice <= 18000) {
-            throw new IllegalArgumentException("최소 주문 금액은 18000원 이상이어야 합니다.");
-        }
-    }
 
 }
