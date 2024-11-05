@@ -26,12 +26,12 @@ public class ReviewService {
   private final ReviewRepository reviewRepository;
 
   @Transactional
-  public ReviewCreationResponseDto createReview(User user, Long storeId,
+  public ReviewCreationResponseDto createReview(User user, Long storeId, Long orderId,
       ReviewRequestDto reviewRequestDto) {
 
     Store store = storeRepository.findById(storeId)
         .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
-    Order order = orderRepository.findByIdAndStatus(reviewRequestDto.getOrderId(),
+    Order order = orderRepository.findByIdAndStatus(orderId,
             OrderStatus.COMPLETED)
         .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_COMPLETED));
 
