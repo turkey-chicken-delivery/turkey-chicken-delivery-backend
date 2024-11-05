@@ -1,9 +1,14 @@
 package com.sparta.i_am_delivery.user.controller;
 
+import com.sparta.i_am_delivery.common.annotation.AuthUser;
 import com.sparta.i_am_delivery.common.config.jwt.JwtHelper;
+import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.user.dto.request.UserLogInRequestDto;
 import com.sparta.i_am_delivery.user.dto.request.UserSignUpRequestDto;
+import com.sparta.i_am_delivery.user.dto.request.UserUpdateNameRequestDto;
+import com.sparta.i_am_delivery.user.dto.request.UserUpdatePasswordRequestDto;
 import com.sparta.i_am_delivery.user.dto.response.UserSignUpResponseDto;
+import com.sparta.i_am_delivery.user.dto.response.UserUpdateNameResponseDto;
 import com.sparta.i_am_delivery.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -37,5 +42,24 @@ public class UserController {
         userService.logIn(userLogInRequestDto.getEmail(), userLogInRequestDto.getPassword());
     jwtHelper.addTokenToCookie(response, token);
     return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  @PutMapping("/{id}/name")
+  public ResponseEntity<UserUpdateNameResponseDto> updateUserName(
+      @AuthUser User user,
+      @PathVariable Long id,
+      @Valid @RequestBody UserUpdateNameRequestDto userUpdateNameRequestDto) {
+    UserUpdateNameResponseDto userUpdateNameResponseDto =
+        userService.updateName(user, id, userUpdateNameRequestDto.getName());
+    return ResponseEntity.status(HttpStatus.OK).body(userUpdateNameResponseDto);
+  }
+
+  @PutMapping("/{id}/password")
+  public ResponseEntity<Void> updateUserPassword(
+      @AuthUser User user,
+      @PathVariable Long id,
+      @Valid @RequestBody UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
+    userService.updatePassword(user, id, userUpdatePasswordRequestDto);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }
