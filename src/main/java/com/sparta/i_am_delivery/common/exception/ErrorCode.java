@@ -21,7 +21,9 @@ public enum ErrorCode {
   INVALID_ACCESS_TOKEN("INVALID_ACCESS_TOKEN", "유효하지 않은 로그인 토큰 입니다.", HttpStatus.UNAUTHORIZED),
   UNAUTHORIZED_ACCESS("UNAUTHORIZED_ACCESS", "본인이 아닌 사용자입니다.", HttpStatus.FORBIDDEN),
   INVALID_PASSWORD("INVALID_PASSWORD", "현재 사용중인 비밀 번호입니다.", HttpStatus.BAD_REQUEST),
-  PASSWORD_MISMATCH("PASSWORD_MISMATCH","현재 비밀번호가 일치하지 않습니다.",HttpStatus.UNAUTHORIZED),
+  PASSWORD_MISMATCH("PASSWORD_MISMATCH", "현재 비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED),
+  STORE_OWNER_ACTION_NOT_ALLOWED(
+      "STORE_OWNER_ACTION_NOT_ALLOWED", "가게 주인이 할 수 없는 행동입니다", HttpStatus.UNAUTHORIZED),
 
 
     // 가게 관련 에러 코드
@@ -52,13 +54,13 @@ public enum ErrorCode {
   REVIEW_ALREADY_EXISTS("REVIEW_ALREADY_EXISTS", "이미 리뷰가 존재합니다.", HttpStatus.CONFLICT),
   REVIEW_INVALID_REQUEST("REVIEW_INVALID_REQUEST", "리뷰 수정 권한이 없습니다.", HttpStatus.BAD_REQUEST),
 
-
   // 댓글 관련 에러 코드
   COMMENT_NOT_FOUND("COMMENT_NOT_FOUND", "댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   NO_COMMENT_PERMISSION("NO_COMMENT_PERMISSION", "댓글 수정/삭제 권한이 없습니다.", HttpStatus.FORBIDDEN),
 
   // 즐겨찾기 관련 에러 코드
   LIKE_NOT_FOUND("LIKE_NOT_FOUND", "즐겨찾기를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  LIKE_DUPLICATE("LIKE_DUPLICATE", "이미 즐겨찾기 된 가게 입니다.", HttpStatus.CONFLICT),
 
   // 기타 에러 코드
   INVALID_REQUEST("INVALID_REQUEST", "잘못된 요청입니다.", HttpStatus.BAD_REQUEST),
