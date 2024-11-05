@@ -27,15 +27,18 @@ public class ReviewController {
   @GetMapping("/orders/{orderId}/reviews")
   public ResponseEntity<ReviewCreationResponseDto> createReview(@AuthUser User user,
       @PathVariable @Valid Long storeId, @RequestBody @Valid ReviewRequestDto reviewRequestDto,
-      @PathVariable String orderId) {
+      @PathVariable @Valid Long orderId) {
 
-    ReviewCreationResponseDto review = reviewService.createReview(user, storeId, orderId, reviewRequestDto);
+    ReviewCreationResponseDto review = reviewService.createReview(user, storeId, orderId,
+        reviewRequestDto);
     return ResponseEntity.status(HttpStatus.CREATED).body(review);
   }
 
   @PutMapping("/reviews/{id}")
-  public ResponseEntity<ReviewUpdateResponseDto> updateReview(@AuthUser User user, @PathVariable Long id, @RequestBody @Valid ReviewRequestDto reviewRequestDto) {
-    R
-    return null;
+  public ResponseEntity<ReviewUpdateResponseDto> updateReview(@AuthUser User user,
+      @PathVariable Long id, @RequestBody @Valid ReviewRequestDto reviewRequestDto) {
+
+    ReviewUpdateResponseDto review = reviewService.updateReview(user, id, reviewRequestDto);
+    return ResponseEntity.status(HttpStatus.OK).body(review);
   }
 }
