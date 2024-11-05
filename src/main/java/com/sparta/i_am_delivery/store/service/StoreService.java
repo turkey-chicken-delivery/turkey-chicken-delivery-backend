@@ -5,8 +5,10 @@ import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
+import com.sparta.i_am_delivery.store.dto.request.StoreUpdateRequestDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreCreateResponseDto;
 import com.sparta.i_am_delivery.store.dto.request.StoreCreateRequestDto;
+import com.sparta.i_am_delivery.store.dto.response.StoreUpdateResponseDto;
 import com.sparta.i_am_delivery.user.enums.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,9 @@ public class StoreService {
 
 
     @Transactional
-    public StoreCreateResponseDto createStore(StoreCreateRequestDto requestDto, User user){
+    public StoreCreateResponseDto createStore(StoreCreateRequestDto requestDto, User user) {
 
-        if (user.getType() != UserType.OWNER){
+        if (user.getType() != UserType.OWNER) {
             throw new CustomException(ErrorCode.INVALID_OWNER);
         }
 
@@ -34,14 +36,13 @@ public class StoreService {
         }
 
 
-       validateStoreTimes(requestDto.getOpenTime(), requestDto.getCloseTime());
-
+        validateStoreTimes(requestDto.getOpenTime(), requestDto.getCloseTime());
 
 
         Store store = Store.builder()
                 .owner(user)
                 .name(requestDto.getName())
-               .openTime(requestDto.getOpenTime())
+                .openTime(requestDto.getOpenTime())
                 .closeTime(requestDto.getCloseTime())
                 .minimumPrice(requestDto.getMinimumPrice())
                 .build();
@@ -58,4 +59,17 @@ public class StoreService {
     }
 
 
+    public StoreUpdateResponseDto updateStore(Long id, StoreUpdateRequestDto requestDto, User user) {
+
+        Store updateStore = storeRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+        if (updateStore.getOwner().getId() != user.getId()) {
+            throw new CustomException(ErrorCode.INVALID_OWNER);
+        }
+        updateStore.update(requestDto);
+        storeRepository.save(updateStore);
+
+        return new StoreUpdateResponseDto(updateStore);
+    }
 }
