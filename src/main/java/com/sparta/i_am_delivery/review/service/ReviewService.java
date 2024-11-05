@@ -6,6 +6,7 @@ import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.order.entity.Order;
 import com.sparta.i_am_delivery.domain.order.repository.OrderRepository;
 import com.sparta.i_am_delivery.domain.review.entity.Review;
+import com.sparta.i_am_delivery.domain.review.repository.ReviewRepository;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
@@ -23,22 +24,25 @@ public class ReviewService {
   private final StoreRepository storeRepository;
   private final OrderRepository orderRepository;
   private final UserRepository userRepository;
+  private final ReviewRepository reviewRepository;
 
   @Transactional
-  public ReviewCreationResponseDto createReview(User jwtUser, Long storeId, Long orderId,
+  public ReviewCreationResponseDto createReview(User user, Long storeId, Long orderId,
       ReviewRequestDto reviewRequestDto) {
 
-    User user = userRepository.findById(jwtUser.getId())
-        .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     Store store = storeRepository.findById(storeId)
         .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
     Order order = orderRepository.findById(orderId)
         .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
 
+    if (reviewRepository.findByOrderId(orderId).isPresent()) {
+      throw new CustomException(ErrorCode.REVIEW_ALREADY_EXISTS);
+    }
     Review review = new Review();
     review.createReview(user, store, order, reviewRequestDto.getConmment(),
         reviewRequestDto.getStar());
-    
+    reviewRepository.save(review);
+
     return new ReviewCreationResponseDto(review);
   }
 }
