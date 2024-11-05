@@ -1,5 +1,6 @@
 package com.sparta.i_am_delivery.store.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import lombok.Getter;
 
@@ -10,10 +11,14 @@ import java.time.LocalTime;
 public class StoreCreateResponseDto {
     private Long id;
     private String name;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime openTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime closeTime;
     private Long minimumPrice;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime modifiedAt;
 
     public StoreCreateResponseDto(Store saveStore) {
