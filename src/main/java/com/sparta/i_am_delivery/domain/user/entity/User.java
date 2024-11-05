@@ -4,7 +4,14 @@ import com.sparta.i_am_delivery.common.entity.TimeStamped;
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.user.enums.UserType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +46,7 @@ public class User extends TimeStamped {
     this.name = name;
     this.type = type;
   }
-  
+
   // 로그인 유저 유효성 처리
   public void authenticate(String reqPassword, PasswordEncoder passwordEncoder) {
     if (this.getDeletedAt() != null) {

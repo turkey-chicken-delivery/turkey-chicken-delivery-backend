@@ -20,17 +20,20 @@ public enum ErrorCode {
       "NOT_FOUND_ACCESS_TOKEN", "접근할 수 없습니다. 로그인 해주세요.", HttpStatus.UNAUTHORIZED),
   INVALID_ACCESS_TOKEN("INVALID_ACCESS_TOKEN", "유효하지 않은 로그인 토큰 입니다.", HttpStatus.UNAUTHORIZED),
 
-  // 가게 관련 에러 코드
-  STORE_NOT_FOUND("STORE_NOT_FOUND", "가게를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    // 가게 관련 에러 코드
+    STORE_NOT_FOUND("STORE_NOT_FOUND", "가게를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
-  // 메뉴 관련 에러 코드
-  MENU_NOT_FOUND("MENU_NOT_FOUND", "메뉴를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    // 메뉴 관련 에러 코드
+    MENU_NOT_FOUND("MENU_NOT_FOUND", "메뉴를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
   // 주문 관련 에러 코드
   ORDER_NOT_FOUND("ORDER_NOT_FOUND", "주문을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 
   // 리뷰 관련 에러 코드
   REVIEW_NOT_FOUND("REVIEW_NOT_FOUND", "리뷰를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+  INVALID_STAR_RATING("INVALID_STAR_RATING", "별점은 1에서 5 사이여야 합니다.", HttpStatus.BAD_REQUEST),
+  INVALID_STORE_OR_ORDER("INVALID_STORE_OR_ORDER", "유효하지 않은 가게 또는 주문입니다.", HttpStatus.BAD_REQUEST),
+
 
   // 댓글 관련 에러 코드
   COMMENT_NOT_FOUND("COMMENT_NOT_FOUND", "댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
