@@ -23,6 +23,8 @@ public enum ErrorCode {
   // 가게 관련 에러 코드
   STORE_NOT_FOUND("STORE_NOT_FOUND", "가게를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   INVALID_OWNER ( "INVALID_OWNER", "사장님이 아니면 가게를 생성 할 수 없습니다.",HttpStatus.FORBIDDEN),
+  STORE_BAD_REQUEST("STORE_BAD_REQUEST","오픈 시간은 마감 시간보다 이전이어야 합니다.",HttpStatus.BAD_REQUEST),
+  TOO_MANY_STORE ("TOO_MANY_STORE", "가게는 3개이상 생성 할 수 없습니다.",HttpStatus.FORBIDDEN),
 
   // 메뉴 관련 에러 코드
   MENU_NOT_FOUND("MENU_NOT_FOUND", "메뉴를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
