@@ -5,8 +5,8 @@ import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
-import com.sparta.i_am_delivery.store.dto.response.StoreResponseDto;
-import com.sparta.i_am_delivery.store.dto.request.StoreRequestDto;
+import com.sparta.i_am_delivery.store.dto.response.StoreCreateResponseDto;
+import com.sparta.i_am_delivery.store.dto.request.StoreCreateRequestDto;
 import com.sparta.i_am_delivery.user.enums.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class StoreService {
 
 
     @Transactional
-    public StoreResponseDto createStore(StoreRequestDto requestDto, User user){
+    public StoreCreateResponseDto createStore(StoreCreateRequestDto requestDto, User user){
 
         if (user.getType() != UserType.OWNER){
             throw new CustomException(ErrorCode.INVALID_OWNER);
@@ -30,7 +30,7 @@ public class StoreService {
 
         int storeCount = storeRepository.countByOwner(user);
         if (storeCount >= 3) {
-            throw new IllegalArgumentException("가게는 최대 3개까지만 운영할 수 있습니다.");
+            throw new CustomException(ErrorCode.TOO_MANY_STORE);
         }
 
 
@@ -47,13 +47,13 @@ public class StoreService {
                 .build();
 
         Store saveStore = storeRepository.save(store);
-        return new StoreResponseDto(saveStore);
+        return new StoreCreateResponseDto(saveStore);
     }
 
     private void validateStoreTimes(LocalTime openTime, LocalTime closeTime) {
 
         if (!openTime.isBefore(closeTime)) {
-            throw new IllegalArgumentException("오픈 시간은 마감 시간보다 이전이어야 합니다.");
+            throw new CustomException(ErrorCode.STORE_BAD_REQUEST);
         }
     }
 
