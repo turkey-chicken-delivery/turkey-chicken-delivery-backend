@@ -40,4 +40,8 @@ public class Menu extends TimeStamped {
         this.price = requestDto.getPrice();
     }
 
+    public void update(MenuRequestDto requestDto) {
+        this.name = requestDto.getName();
+        this.price = requestDto.getPrice();
+    }
 }
