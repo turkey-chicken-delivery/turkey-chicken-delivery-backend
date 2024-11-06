@@ -4,7 +4,6 @@ package com.sparta.i_am_delivery.common.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,18 +13,23 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class TimeStamped {
-    @CreatedDate
-    @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdAt;
+  @CreatedDate
+  @Column(updatable = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime modifiedAt;
+  @LastModifiedDate
+  @Column
+  @Temporal(TemporalType.TIMESTAMP)
+  private LocalDateTime modifiedAt;
 
-    @LastModifiedBy
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime deletedAt;
+
+  @Column
+  @Temporal(TemporalType.TIMESTAMP)
+  private LocalDateTime deletedAt;
+
+  public void delete() {
+    this.deletedAt = LocalDateTime.now();
+  }
 }
+
