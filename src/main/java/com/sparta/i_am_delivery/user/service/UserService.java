@@ -105,11 +105,9 @@ public class UserService {
   }
 
   @Transactional
-  public Page<OrderPageReadResponseDto> getUserOrders(
-      int pageNo, int pageSize, User user, Long id) {
+  public Page<OrderPageReadResponseDto> getUserOrders(int page, int size, User user, Long id) {
     user.validateUserIdentity(id);
-    PageRequest pageRequest =
-        PageRequest.of(pageNo - 1, pageSize, Sort.Direction.DESC, "modifiedAt");
+    PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.Direction.DESC, "modifiedAt");
     Page<Order> orders = orderRepository.findAllByUserId(user.getId(), pageRequest);
     return orders.map(
         order -> {
