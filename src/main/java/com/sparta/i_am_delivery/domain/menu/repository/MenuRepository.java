@@ -19,4 +19,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
   List<Menu> findAllByStoreId(Long storeId);
 
   Page<Menu> findAllByStoreId(Long storeId, Pageable pageable);
+
+  boolean existsByStoreIdAndName(Long storeId, String name);
 }

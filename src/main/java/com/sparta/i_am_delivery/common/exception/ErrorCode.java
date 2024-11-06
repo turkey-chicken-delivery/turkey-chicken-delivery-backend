@@ -1,5 +1,6 @@
 package com.sparta.i_am_delivery.common.exception;
 
+import org.springframework.http.HttpStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public enum ErrorCode {
   MIN_ORDER_PRICE_NOT_MET("MIN_ORDER_PRICE_NOT_MET", "최소 주문 금액을 만족하지 않습니다.",
       HttpStatus.BAD_REQUEST),
   NO_STORE_PERMISSION("NO_STORE_PERMISSION", "가게에 대한 권한이 없습니다.", HttpStatus.FORBIDDEN),
-
+  DUPLICATE_MENU_NAME("DUPLICATE_MENU_NAME", "이미 같은 이름의 메뉴가 있습니다.", HttpStatus.BAD_REQUEST),
 
   // 메뉴 관련 에러 코드
   MENU_NOT_FOUND("MENU_NOT_FOUND", "메뉴를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),

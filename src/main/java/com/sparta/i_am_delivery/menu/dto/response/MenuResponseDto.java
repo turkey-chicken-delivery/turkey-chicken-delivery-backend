@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class MenuResponseDto {
-    private Long id;
-    private String name;
-    private Long price;
+  private Long id;
+  private String name;
+  private Long price;
 
-    public MenuResponseDto(Menu menu) {
-        this.id = menu.getId();
-        this.name = menu.getName();
-        this.price = menu.getPrice();
-    }
+  public MenuResponseDto(Menu menu) {
+    this.id = menu.getId();
+    this.name = menu.getName();
+    this.price = menu.getPrice();
+  }
 
 }
