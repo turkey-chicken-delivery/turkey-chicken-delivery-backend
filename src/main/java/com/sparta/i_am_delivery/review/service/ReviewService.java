@@ -3,6 +3,7 @@ package com.sparta.i_am_delivery.review.service;
 import com.sparta.i_am_delivery.comment.dto.response.CommentResponseDto;
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
+import com.sparta.i_am_delivery.domain.comment.entity.Comment;
 import com.sparta.i_am_delivery.domain.comment.repository.CommentRepository;
 import com.sparta.i_am_delivery.domain.order.entity.Order;
 import com.sparta.i_am_delivery.domain.order.repository.OrderRepository;
@@ -101,6 +102,26 @@ public class ReviewService {
     int totalPages = reviewPage.getTotalPages();
 
     return new ReviewListResponseDto(reviewResponseDtos, reviewPage.getSize(), page, totalPages);
+  }
+
+  @Transactional
+  public void deleteReview(Long storeId, Long id, User user) {
+
+    Review review = reviewRepository.findById(id)
+        .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
+
+    Comment comment = commentRepository.findByReviewId(review.getId())
+        .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+
+    if (!review.getStore().getId().equals(storeId)) {
+      throw new CustomException(ErrorCode.REVIEW_NOT_BELONG_TO_STORE);
+    }
+    if (!review.getUser().getId().equals(user.getId())) {
+      throw new CustomException(ErrorCode.NOT_AUTHOR_OF_REVIEW);
+    }
+
+    commentRepository.delete(comment);
+    reviewRepository.delete(review);
   }
 
 }

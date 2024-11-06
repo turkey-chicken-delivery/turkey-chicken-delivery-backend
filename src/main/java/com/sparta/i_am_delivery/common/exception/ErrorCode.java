@@ -25,7 +25,7 @@ public enum ErrorCode {
   PASSWORD_MISMATCH("PASSWORD_MISMATCH", "현재 비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED),
   STORE_OWNER_ACTION_NOT_ALLOWED(
       "STORE_OWNER_ACTION_NOT_ALLOWED", "가게 주인이 할 수 없는 행동입니다", HttpStatus.UNAUTHORIZED),
-  ACTIVE_STORE_EXISTS("ACTIVE_STORE_EXISTS","활성화된 가게가 있어 회원을 삭제할 수 없습니다.",HttpStatus.BAD_REQUEST),
+  ACTIVE_STORE_EXISTS("ACTIVE_STORE_EXISTS", "활성화된 가게가 있어 회원을 삭제할 수 없습니다.", HttpStatus.BAD_REQUEST),
 
 
   // 가게 관련 에러 코드
@@ -64,6 +64,9 @@ public enum ErrorCode {
   REVIEW_DUPLICATE("REVIEW_DUPLICATE", "이미 리뷰가 존재합니다.", HttpStatus.BAD_REQUEST),
   CANNOT_REVIEW_OWN_STORE("CANNOT_REVIEW_OWN_STORE", "사장님은 리뷰를 작성할 수 없습니다.",
       HttpStatus.BAD_REQUEST),
+  REVIEW_NOT_BELONG_TO_STORE("REVIEW_NOT_BELONG_TO_STORE", "해당 리뷰가 가게에 속해있지않습니다.",
+      HttpStatus.BAD_REQUEST),
+  NOT_AUTHOR_OF_REVIEW("NOT_AUTHOR_OF_REVIEW", "해당 리뷰 작성자가 아닙니다.", HttpStatus.UNAUTHORIZED),
 
 
   // 댓글 관련 에러 코드
