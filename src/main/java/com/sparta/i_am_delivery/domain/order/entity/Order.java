@@ -66,7 +66,7 @@ public class Order extends TimeStamped {
     this.menu = menu;
     this.quantity = quantity;
     this.totalPrice = totalPrice;
-    this.status = status;
+    this.status = OrderStatus.PENDING; // 기본값 PENDING으로 설정
   }
 
   // 주문 상태 업데이트 메서드

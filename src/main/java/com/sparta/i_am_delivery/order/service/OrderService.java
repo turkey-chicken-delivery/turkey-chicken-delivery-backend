@@ -12,7 +12,8 @@ import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.domain.user.repository.UserRepository;
 import com.sparta.i_am_delivery.order.dto.request.OrderRequestDto;
 import com.sparta.i_am_delivery.order.dto.request.OrderStatusRequestDto;
-import com.sparta.i_am_delivery.order.dto.response.OrderResponseDto;
+import com.sparta.i_am_delivery.order.dto.response.CreateResponseDto;
+import com.sparta.i_am_delivery.order.dto.response.UpdatedResponseDto;
 import com.sparta.i_am_delivery.order.enums.OrderStatus;
 import jakarta.transaction.Transactional;
 import java.time.LocalTime;
@@ -30,7 +31,7 @@ public class OrderService {
 
   // 주문 생성
   @Transactional
-  public OrderResponseDto createOrder(Long userId, Long storeId, OrderRequestDto orderRequestDto) {
+  public CreateResponseDto createOrder(Long userId, Long storeId, OrderRequestDto orderRequestDto) {
     // 유효한 사용자 확인
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -38,6 +39,11 @@ public class OrderService {
     // 유효한 가게 확인
     Store store = storeRepository.findById(storeId)
         .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+    // 가게 사장님이 본인 가게에 주문하기 금지
+    if (store.getOwner().getId().equals(userId)) {
+      throw new CustomException(ErrorCode.CANNOT_ORDER_OWN_STORE);
+    }
 
     // 가게 영업 시간 확인
     LocalTime now = LocalTime.now();
@@ -79,7 +85,7 @@ public class OrderService {
     orderRepository.save(order);
 
     // 응답 DTO 생성
-    return OrderResponseDto.builder()
+    return CreateResponseDto.builder()
         .orderId(order.getId())
         .quantity(order.getQuantity())
         .totalPrice(order.getTotalPrice())
@@ -90,7 +96,7 @@ public class OrderService {
 
   // 주문 상태 변경 (유저)
   @Transactional
-  public OrderResponseDto updateOrderStatus(Long ownerId, Long storeId, Long orderId,
+  public UpdatedResponseDto updateOrderStatus(Long ownerId, Long storeId, Long orderId,
       OrderStatusRequestDto orderStatusRequestDto) {
     // 가게 소유자 확인
     Store store = storeRepository.findById(storeId)
@@ -118,7 +124,7 @@ public class OrderService {
     order.updateStatus(orderStatusRequestDto.getOrderStatus());
 
     // 응답 DTO 생성
-    return OrderResponseDto.builder()
+    return UpdatedResponseDto.builder()
         .orderId(order.getId())
         .orderStatus(order.getStatus())
         .createdAt(order.getCreatedAt())
@@ -127,7 +133,7 @@ public class OrderService {
 
   // 주문 상태 변경 (취소)
   @Transactional
-  public OrderResponseDto cancelOrder(Long userId, Long storeId, Long orderId,
+  public UpdatedResponseDto cancelOrder(Long userId, Long storeId, Long orderId,
       OrderStatusRequestDto orderStatusRequestDto) {
     // 유효한 가게 확인
     Store store = storeRepository.findById(storeId)
@@ -150,7 +156,7 @@ public class OrderService {
     //주문 상태 변경
     order.updateStatus(OrderStatus.CANCELED);
     // response DTO 생성
-    return OrderResponseDto.builder()
+    return UpdatedResponseDto.builder()
         .orderId(order.getId())
         .orderStatus(order.getStatus())
         .modifiedAt(order.getModifiedAt())

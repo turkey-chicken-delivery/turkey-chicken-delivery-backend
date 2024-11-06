@@ -4,9 +4,11 @@ import com.sparta.i_am_delivery.order.enums.OrderStatus;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class OrderResponseDto {
+@NoArgsConstructor
+public class UpdatedResponseDto {
 
   private Long orderId;
   private Long storeId;
@@ -19,7 +21,7 @@ public class OrderResponseDto {
   private LocalDateTime modifiedAt;
 
   @Builder
-  public OrderResponseDto(Long orderId, Long storeId, Long userId, Long menuId, Integer quantity,
+  public UpdatedResponseDto(Long orderId, Long storeId, Long userId, Long menuId, Integer quantity,
       Long totalPrice, OrderStatus orderStatus, LocalDateTime createdAt, LocalDateTime modifiedAt) {
     this.orderId = orderId;
     this.storeId = storeId;
