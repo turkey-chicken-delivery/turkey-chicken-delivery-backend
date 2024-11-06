@@ -27,9 +27,6 @@ public class StoreController {
     return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
   }
 
-
-  @GetMapping()
-
   @PutMapping("/{id}")
   public ResponseEntity<StoreUpdateResponseDto> updateStore(@Valid @PathVariable Long id, @AuthUser User user, @RequestBody StoreUpdateRequestDto requestDto) {
 
@@ -41,8 +38,8 @@ public class StoreController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Long> deleteStore(@Valid @PathVariable Long id, @AuthUser User user) {
-
+  public ResponseEntity<Void> deleteStore(@Valid @PathVariable Long id, @AuthUser User user) {
+    storeService.deleteStore(id, user);
     return ResponseEntity.noContent().build();
   }
 }
