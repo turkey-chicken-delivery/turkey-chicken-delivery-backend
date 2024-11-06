@@ -4,15 +4,13 @@ import com.sparta.i_am_delivery.common.entity.TimeStamped;
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.user.entity.User;
-import com.sparta.i_am_delivery.store.Enum.StoreStatus;
 import com.sparta.i_am_delivery.store.dto.request.StoreUpdateRequestDto;
 import jakarta.persistence.*;
+import java.time.LocalTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
-
-import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -36,16 +34,6 @@ public class Store extends TimeStamped {
   private LocalTime closeTime;
   private Long minimumPrice;
 
-  @Enumerated(EnumType.STRING)
-  private StoreStatus storeStatus = StoreStatus.OPEN;
-
-
-  public void updateStoreStatus() {
-    if (this.getDeletedAt() != null) {
-      this.storeStatus = StoreStatus.DELETE;
-    }
-  }
-
   @Builder
   public Store(
       User owner, String name, LocalTime openTime, LocalTime closeTime, Long minimumPrice) {
@@ -56,20 +44,15 @@ public class Store extends TimeStamped {
     this.minimumPrice = minimumPrice;
   }
 
-
   public void update(StoreUpdateRequestDto requestDto) {
     this.openTime = requestDto.getOpenTime();
     this.closeTime = requestDto.getCloseTime();
     this.minimumPrice = requestDto.getMinimumPrice();
-
   }
-
 
   public void validateOwner(Long userId) {
     if (this.owner.getId().equals(userId)) {
       throw new CustomException(ErrorCode.STORE_OWNER_ACTION_NOT_ALLOWED);
     }
   }
-
-
 }

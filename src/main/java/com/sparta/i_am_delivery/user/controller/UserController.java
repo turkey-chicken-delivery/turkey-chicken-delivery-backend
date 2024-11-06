@@ -4,12 +4,14 @@ import com.sparta.i_am_delivery.common.annotation.AuthUser;
 import com.sparta.i_am_delivery.common.config.jwt.JwtHelper;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.user.dto.request.*;
+import com.sparta.i_am_delivery.user.dto.response.OrderPageReadResponseDto;
 import com.sparta.i_am_delivery.user.dto.response.UserSignUpResponseDto;
 import com.sparta.i_am_delivery.user.dto.response.UserUpdateNameResponseDto;
 import com.sparta.i_am_delivery.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +67,18 @@ public class UserController {
       @AuthUser User user,
       @PathVariable Long id,
       @Valid @RequestBody UserDeleteRequestDto userDeleteRequestDto) {
-    userService.deleteUser(user,id,userDeleteRequestDto);
+    userService.deleteUser(user, id, userDeleteRequestDto);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @GetMapping("/{id}/orders")
+  public ResponseEntity<Page<OrderPageReadResponseDto>> getUsersOrder(
+      @AuthUser User user,
+      @PathVariable Long id,
+      @RequestParam(defaultValue = "1") int pageNo,
+      @RequestParam(defaultValue = "10") int pageSize) {
+    Page<OrderPageReadResponseDto> orderPage =
+        userService.getUsersOrder(pageNo, pageSize, user, id);
+    return ResponseEntity.status(HttpStatus.OK).body(orderPage);
   }
 }
