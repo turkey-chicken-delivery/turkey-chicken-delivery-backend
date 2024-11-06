@@ -43,7 +43,6 @@ public class StoreController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Long> deleteStore(@Valid @PathVariable Long id, @AuthUser User user) {
 
-    Long deletedStoreId = storeService.deleteStore(id, user);
     return ResponseEntity.noContent().build();
   }
 }
