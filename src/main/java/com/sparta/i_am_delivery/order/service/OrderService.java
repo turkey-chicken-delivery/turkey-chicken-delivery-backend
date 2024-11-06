@@ -2,10 +2,13 @@ package com.sparta.i_am_delivery.order.service;
 
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
+import com.sparta.i_am_delivery.domain.comment.entity.Comment;
+import com.sparta.i_am_delivery.domain.comment.repository.CommentRepository;
 import com.sparta.i_am_delivery.domain.menu.entity.Menu;
 import com.sparta.i_am_delivery.domain.menu.repository.MenuRepository;
 import com.sparta.i_am_delivery.domain.order.entity.Order;
 import com.sparta.i_am_delivery.domain.order.repository.OrderRepository;
+import com.sparta.i_am_delivery.domain.review.repository.ReviewRepository;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
@@ -18,6 +21,7 @@ import com.sparta.i_am_delivery.order.dto.response.UpdatedResponseDto;
 import com.sparta.i_am_delivery.order.enums.OrderStatus;
 import jakarta.transaction.Transactional;
 import java.time.LocalTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,8 @@ public class OrderService {
   private final UserRepository userRepository;
   private final StoreRepository storeRepository;
   private final MenuRepository menuRepository;
+  private final ReviewRepository reviewRepository;
+  private final CommentRepository commentRepository;
 
   // 주문 생성
   @Transactional
@@ -160,5 +166,43 @@ public class OrderService {
         .orderStatus(order.getStatus())
         .modifiedAt(order.getModifiedAt())
         .build();
+  }
+
+  // 주문 삭제
+  @Transactional
+  public void deleteOrder(Long userId, Long storeId, Long orderId) {
+    // 주문 확인
+    Order order = orderRepository.findById(orderId)
+        .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+
+    // 주문이 해당 가게의 주문인지 확인
+    if (!order.getStore().getId().equals(storeId)) {
+      throw new CustomException(ErrorCode.ORDER_NOT_FOUND_IN_STORE);
+    }
+
+    // 주문 소유자인지 확인
+    if (!order.getUser().getId().equals(userId)) {
+      throw new CustomException(ErrorCode.UNAUTHORIZED_ACCESS);
+    }
+
+    // 주문 상태가 COMPLETED인지 확인
+    if (!order.getStatus().equals(OrderStatus.COMPLETED)) {
+      throw new CustomException(ErrorCode.INVALID_ORDER_STATUS_FOR_DELETION);
+    }
+
+    // 관련 리뷰 및 댓글 삭제 (하드 삭제)
+    reviewRepository.findByOrderId(orderId).ifPresent(review -> {
+      // 관련 댓글 모두 삭제
+      List<Comment> comments = commentRepository.findAllByReviewId(review.getId());
+      if (!comments.isEmpty()) {
+        commentRepository.deleteAll(comments);
+      }
+      // 리뷰 삭제
+      reviewRepository.delete(review);
+    });
+
+    // 주문 소프트 삭제 처리
+    order.softDelete();
+    orderRepository.save(order);
   }
 }

@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -64,5 +65,16 @@ public class OrderController {
         orderId,
         orderStatusRequestDto);
     return ResponseEntity.ok(responseDto);
+  }
+
+  // 주문 삭제 (소프트 딜리트)
+  @DeleteMapping("/{storeId}/orders/{orderId}")
+  public ResponseEntity<Void> deleteOrder(
+      @PathVariable Long storeId,
+      @PathVariable Long orderId,
+      @AuthUser User user
+  ) {
+    orderService.deleteOrder(user.getId(), storeId, orderId);
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 }

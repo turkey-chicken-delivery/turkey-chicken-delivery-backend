@@ -24,7 +24,7 @@ public enum ErrorCode {
   PASSWORD_MISMATCH("PASSWORD_MISMATCH", "현재 비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED),
   STORE_OWNER_ACTION_NOT_ALLOWED(
       "STORE_OWNER_ACTION_NOT_ALLOWED", "가게 주인이 할 수 없는 행동입니다", HttpStatus.UNAUTHORIZED),
-  ACTIVE_STORE_EXISTS("ACTIVE_STORE_EXISTS","활성화된 가게가 있어 회원을 삭제할 수 없습니다.",HttpStatus.BAD_REQUEST),
+  ACTIVE_STORE_EXISTS("ACTIVE_STORE_EXISTS", "활성화된 가게가 있어 회원을 삭제할 수 없습니다.", HttpStatus.BAD_REQUEST),
 
 
   // 가게 관련 에러 코드
@@ -54,6 +54,11 @@ public enum ErrorCode {
   INVALID_QUANTITY("INVALID_QUANTITY", "수량은 1 이상의 양수여야 합니다.", HttpStatus.BAD_REQUEST),
   CANNOT_ORDER_OWN_STORE("CANNOT_ORDER_OWN_STORE", "사장님은 자신의 가게에 주문 할 수 없습니다",
       HttpStatus.BAD_REQUEST),
+  INVALID_ORDER_STATUS_FOR_DELETION("INVALID_ORDER_STATUS_FOR_DELETION",
+      "삭제할 수 있는 상태가 아닙니다. 주문 상태가 COMPLETED여야 합니다.", HttpStatus.BAD_REQUEST),
+  UNAUTHORIZED_ORDER_DELETION("UNAUTHORIZED_ORDER_DELETION", "삭제 권한이 없는 사용자입니다.",
+      HttpStatus.FORBIDDEN),
+
   // 리뷰 관련 에러 코드
   REVIEW_NOT_FOUND("REVIEW_NOT_FOUND", "요청자의 리뷰를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   INVALID_STAR_RATING("INVALID_STAR_RATING", "별점은 1에서 5 사이여야 합니다.", HttpStatus.BAD_REQUEST),

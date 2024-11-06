@@ -58,6 +58,10 @@ public class Order extends TimeStamped {
   @Column(nullable = false)
   private OrderStatus status;
 
+  //소프트 삭제
+  @Column(nullable = false)
+  private boolean deleted = false;
+
   @Builder
   public Order(User user, Store store, Menu menu, Integer quantity, Long totalPrice,
       OrderStatus status) {
@@ -67,10 +71,16 @@ public class Order extends TimeStamped {
     this.quantity = quantity;
     this.totalPrice = totalPrice;
     this.status = status;
+    this.deleted = false;
   }
 
   // 주문 상태 업데이트 메서드
   public void updateStatus(OrderStatus newStatus) {
     this.status = newStatus;
+  }
+
+  // 소프트 삭제 메서드
+  public void softDelete() {
+    this.deleted = true;
   }
 }
