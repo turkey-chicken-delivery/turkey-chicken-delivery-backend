@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,7 @@ public class Comment extends TimeStamped {
   @JoinColumn(name = "store_id", nullable = false)
   private Store store;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "review_id", nullable = false)
   private Review review;
 
@@ -39,12 +40,12 @@ public class Comment extends TimeStamped {
   private User user;
 
   @Column(nullable = false)
-  private String comment;
+  private String content;
 
   public void createComment(Store store, Review review, User user, String comment) {
     this.store = store;
     this.review = review;
     this.user = user;
-    this.comment = comment;
+    this.content = comment;
   }
 }

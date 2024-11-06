@@ -3,6 +3,7 @@ package com.sparta.i_am_delivery.domain.review.entity;
 import com.sparta.i_am_delivery.common.entity.TimeStamped;
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
+import com.sparta.i_am_delivery.domain.comment.entity.Comment;
 import com.sparta.i_am_delivery.domain.order.entity.Order;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.user.entity.User;
@@ -42,11 +43,15 @@ public class Review extends TimeStamped {
   private Order order;
 
   @Column(nullable = false)
-  private String comment;
+  private String content;
 
   private Long star;
 
-  public void createReview(User user, Store store, Order order, String comment, Long star) {
+  // 리뷰에 달린 댓글을 일대일 관계로 설정
+  @OneToOne(mappedBy = "review", fetch = FetchType.LAZY)
+  private Comment comment;
+
+  public void createReview(User user, Store store, Order order, String content, Long star) {
     if (star < 1 || star > 5) {
       throw new CustomException(ErrorCode.INVALID_STAR_RATING);
     }
@@ -57,12 +62,12 @@ public class Review extends TimeStamped {
     this.user = user;
     this.store = store;
     this.order = order;
-    this.comment = comment;
+    this.content = content;
     this.star = star;
   }
 
-  public void updateReview(String comment, Long star) {
-    this.comment = comment;
+  public void updateReview(String content, Long star) {
+    this.content = content;
     this.star = star;
   }
 }
