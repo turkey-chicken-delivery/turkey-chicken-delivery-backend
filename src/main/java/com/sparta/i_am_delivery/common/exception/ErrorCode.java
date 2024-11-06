@@ -73,6 +73,9 @@ public enum ErrorCode {
   COMMENT_NOT_FOUND("COMMENT_NOT_FOUND", "댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   NO_COMMENT_PERMISSION("NO_COMMENT_PERMISSION", "댓글 수정/삭제 권한이 없습니다.", HttpStatus.FORBIDDEN),
   COMMENT_DUPLICATE("DUPLICATE_COMMENT", "이미 작성하셨습니다.", HttpStatus.BAD_REQUEST),
+  COMMENT_NOT_BELONG_TO_STORE("COMMENT_NOT_BELONG_TO_STORE", "해당 댓글이 가게에 속해있지않습니다",
+      HttpStatus.BAD_REQUEST),
+  NOT_AUTHOR_OF_COMMENT("NOT_AUTHOR_OF_COMMENT", "해당 댓글 작성자가 아닙니다.", HttpStatus.UNAUTHORIZED),
 
   // 즐겨찾기 관련 에러 코드
   LIKE_NOT_FOUND("LIKE_NOT_FOUND", "즐겨찾기를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
