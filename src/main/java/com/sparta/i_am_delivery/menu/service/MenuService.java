@@ -7,6 +7,7 @@ import com.sparta.i_am_delivery.domain.menu.repository.MenuRepository;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.menu.dto.request.MenuRequestDto;
 import com.sparta.i_am_delivery.menu.dto.response.MenuResponseDto;
+import com.sparta.i_am_delivery.store.dto.response.StoreUpdateResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,6 @@ import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 @Service
 @RequiredArgsConstructor
 @Transactional
-
 public class MenuService {
 
     private final MenuRepository menuRepository;
@@ -27,6 +27,15 @@ public class MenuService {
 
         Menu menu = new Menu();
         menu.create(store, requestDto);
+        menuRepository.save(menu);
+        return new MenuResponseDto(menu);
+    }
+
+    public MenuResponseDto updateMenu(Long Id, MenuRequestDto requestDto) {
+        Menu menu = menuRepository.findById(Id)
+                .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
+
+        menu.update(requestDto);
         menuRepository.save(menu);
         return new MenuResponseDto(menu);
     }
