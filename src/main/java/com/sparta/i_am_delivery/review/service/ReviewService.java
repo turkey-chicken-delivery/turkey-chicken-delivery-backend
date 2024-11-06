@@ -30,8 +30,10 @@ public class ReviewService {
   public ReviewCreationResponseDto createReview(User user, Long storeId, Long orderId,
       ReviewRequestDto reviewRequestDto) {
 
+    // 가게 조회
     Store store = storeRepository.findById(storeId)
         .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
     Order order = orderRepository.findByIdAndStatus(orderId,
             OrderStatus.COMPLETED)
         .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_COMPLETED));

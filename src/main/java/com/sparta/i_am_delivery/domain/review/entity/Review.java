@@ -50,6 +50,10 @@ public class Review extends TimeStamped {
     if (star < 1 || star > 5) {
       throw new CustomException(ErrorCode.INVALID_STAR_RATING);
     }
+    // 가게의 사장님 ID와 현재 사용자 ID를 비교
+    if (store.getOwner().getId().equals(user.getId())) {
+      throw new CustomException(ErrorCode.CANNOT_REVIEW_OWN_STORE);
+    }
     this.user = user;
     this.store = store;
     this.order = order;

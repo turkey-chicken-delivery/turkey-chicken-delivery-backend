@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 public class ReviewRequestDto {
 
-  @NotNull
+  @NotBlank(message = "내용을 입력해주세요")
   private String comment;
 
-  @NotBlank
+  @NotNull(message = "별점을 입력해주세요")
   private Long star;
 }

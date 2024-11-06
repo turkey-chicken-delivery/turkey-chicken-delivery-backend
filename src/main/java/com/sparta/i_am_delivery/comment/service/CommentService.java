@@ -1,6 +1,5 @@
 package com.sparta.i_am_delivery.comment.service;
 
-
 import com.sparta.i_am_delivery.comment.dto.request.CommentRequestDto;
 import com.sparta.i_am_delivery.comment.dto.response.CommentCreationResponseDto;
 import com.sparta.i_am_delivery.common.exception.CustomException;
