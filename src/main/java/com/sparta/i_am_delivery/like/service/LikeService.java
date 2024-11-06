@@ -7,7 +7,7 @@ import com.sparta.i_am_delivery.domain.like.repository.LikeRepository;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
-import com.sparta.i_am_delivery.like.dto.info.StoreInfo;
+import com.sparta.i_am_delivery.store.dto.info.StoreInfo;
 import com.sparta.i_am_delivery.like.dto.response.LikeAddResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

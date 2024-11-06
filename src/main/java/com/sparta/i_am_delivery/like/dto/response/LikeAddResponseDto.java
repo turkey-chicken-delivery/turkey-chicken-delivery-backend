@@ -1,6 +1,6 @@
 package com.sparta.i_am_delivery.like.dto.response;
 
-import com.sparta.i_am_delivery.like.dto.info.StoreInfo;
+import com.sparta.i_am_delivery.store.dto.info.StoreInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
