@@ -4,9 +4,17 @@ import com.sparta.i_am_delivery.common.config.jwt.JwtHelper;
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.like.repository.LikeRepository;
+import com.sparta.i_am_delivery.domain.menu.entity.Menu;
+import com.sparta.i_am_delivery.domain.menu.repository.MenuRepository;
+import com.sparta.i_am_delivery.domain.order.entity.Order;
+import com.sparta.i_am_delivery.domain.order.repository.OrderRepository;
+import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.domain.user.repository.UserRepository;
+import com.sparta.i_am_delivery.menu.dto.info.MenuInfo;
+import com.sparta.i_am_delivery.store.dto.info.StoreInfo;
+import com.sparta.i_am_delivery.user.dto.response.OrderPageReadResponseDto;
 import com.sparta.i_am_delivery.user.dto.request.UserDeleteRequestDto;
 import com.sparta.i_am_delivery.user.dto.request.UserSignUpRequestDto;
 import com.sparta.i_am_delivery.user.dto.request.UserUpdatePasswordRequestDto;
@@ -17,6 +25,9 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +39,8 @@ public class UserService {
   private final JwtHelper jwtHelper;
   private final StoreRepository storeRepository;
   private final LikeRepository likeRepository;
+  private final OrderRepository orderRepository;
+  private final MenuRepository menuRepository;
 
   @Transactional
   public UserSignUpResponseDto signUp(UserSignUpRequestDto userSingUpRequestDto) {
@@ -89,6 +102,44 @@ public class UserService {
     likeRepository.deleteByUserId(user.getId());
     user.delete();
     userRepository.save(user);
+  }
+
+  @Transactional
+  public Page<OrderPageReadResponseDto> getUsersOrder(
+      int pageNo, int pageSize, User user, Long id) {
+    user.validateUserIdentity(id);
+    PageRequest pageRequest =
+        PageRequest.of(pageNo - 1, pageSize, Sort.Direction.DESC, "modifiedAt");
+    Page<Order> orders = orderRepository.findAllByUserId(user.getId(), pageRequest);
+    return orders.map(
+        order -> {
+          Menu menu = menuRepository.findByIdIncludeDeleted(order.getMenu().getId());
+          MenuInfo menuInfo =
+              MenuInfo.builder().name(menu.getName()).price(menu.getPrice()).build();
+          Store store = order.getStore();
+          StoreInfo storeDto =
+              StoreInfo.builder()
+                  .id(store.getId())
+                  .name(store.getName())
+                  .minimumPrice(store.getMinimumPrice())
+                  .openTime(store.getOpenTime())
+                  .closeTime(store.getCloseTime())
+                  .build();
+          return mapToOrderPageReadResponseDto(order, storeDto, menuInfo);
+        });
+  }
+
+  private OrderPageReadResponseDto mapToOrderPageReadResponseDto(
+      Order order, StoreInfo storeDto, MenuInfo menuInfo) {
+    return OrderPageReadResponseDto.builder()
+        .orderId(order.getId())
+        .storeInfo(storeDto)
+        .menuInfo(menuInfo)
+        .totalPrice(order.getTotalPrice())
+        .status(order.getStatus())
+        .modifiedAt(order.getModifiedAt())
+        .quantity(order.getQuantity())
+        .build();
   }
 
   private void isValidateUserUniqueness(String email, String name) {

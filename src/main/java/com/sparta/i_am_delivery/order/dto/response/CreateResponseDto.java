@@ -15,16 +15,14 @@ public class CreateResponseDto {
   private Long totalPrice;
   private OrderStatus orderStatus;
   private LocalDateTime createdAt;
-  private LocalDateTime modifiedAt;
 
   @Builder
   public CreateResponseDto(Long orderId, Integer quantity,
-      Long totalPrice, OrderStatus orderStatus, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+      Long totalPrice, OrderStatus orderStatus, LocalDateTime createdAt) {
     this.orderId = orderId;
     this.quantity = quantity;
     this.totalPrice = totalPrice;
     this.orderStatus = orderStatus;
     this.createdAt = createdAt;
-    this.modifiedAt = modifiedAt;
   }
 }

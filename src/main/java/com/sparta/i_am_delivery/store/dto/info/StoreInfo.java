@@ -1,4 +1,4 @@
-package com.sparta.i_am_delivery.like.dto.info;
+package com.sparta.i_am_delivery.store.dto.info;
 
 import java.time.LocalTime;
 import lombok.Builder;

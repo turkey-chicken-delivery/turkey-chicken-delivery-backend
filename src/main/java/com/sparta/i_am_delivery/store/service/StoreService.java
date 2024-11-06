@@ -17,12 +17,14 @@ import com.sparta.i_am_delivery.store.dto.response.StoreCreateResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreDetailResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreUpdateResponseDto;
 import com.sparta.i_am_delivery.user.enums.UserType;
+import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +49,8 @@ public class StoreService {
       throw new CustomException(ErrorCode.TOO_MANY_STORE);
     }
 
-
     validateStoreTimes(requestDto.getOpenTime(), requestDto.getCloseTime());
+
 
 
     Store store = Store.builder()
@@ -59,6 +61,7 @@ public class StoreService {
         .minimumPrice(requestDto.getMinimumPrice())
         .ownerMessage(requestDto.getOwnerMessage())
         .build();
+
 
     Store saveStore = storeRepository.save(store);
     return new StoreCreateResponseDto(saveStore);
@@ -71,20 +74,23 @@ public class StoreService {
     }
   }
 
+
   public StoreDetailResponseDto getDetailStore(Long id) {
     Store store = storeRepository.findById(id)
         .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
-    // select * from Menu where storeId = '굽네치킨(1) and price = 5000 ;
     List<Menu> menus = menuRepository.findAllByStoreId(id);
     return new StoreDetailResponseDto(store, menus);
   }
 
+
   @Transactional
   public StoreUpdateResponseDto updateStore(Long id, StoreUpdateRequestDto requestDto, User user) {
 
-    Store updateStore = storeRepository.findById(id)
-        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+    Store updateStore =
+        storeRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
     if (!updateStore.getOwner().getId().equals(user.getId())) {
       throw new CustomException(ErrorCode.INVALID_OWNER);
@@ -97,15 +103,15 @@ public class StoreService {
 
   @Transactional
   public void deleteStore(Long id, User user) {
-    Store deleteStore = storeRepository.findById(id)
-        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
-
+    Store deleteStore =
+        storeRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
     if (!deleteStore.getOwner().getId().equals(user.getId())) {
       throw new CustomException(ErrorCode.INVALID_OWNER);
     }
     deleteStore.delete();
-    deleteStore.updateStoreStatus();
 
     storeRepository.save(deleteStore);
     commentRepository.deleteByStoreId(id);
@@ -113,9 +119,5 @@ public class StoreService {
     menuRepository.deleteByStoreId(id);
     reviewRepository.deleteByStoreId(id);
     likeRepository.deleteByStoreId(id);
-
-
   }
-
-
 }
