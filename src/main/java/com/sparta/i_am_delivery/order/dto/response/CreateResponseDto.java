@@ -18,7 +18,7 @@ public class CreateResponseDto {
 
   @Builder
   public CreateResponseDto(Long orderId, Integer quantity,
-      Long totalPrice, OrderStatus orderStatus, LocalDateTime createdAt,) {
+      Long totalPrice, OrderStatus orderStatus, LocalDateTime createdAt) {
     this.orderId = orderId;
     this.quantity = quantity;
     this.totalPrice = totalPrice;
