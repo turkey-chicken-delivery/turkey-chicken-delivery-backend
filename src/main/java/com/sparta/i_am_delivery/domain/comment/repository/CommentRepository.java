@@ -9,4 +9,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
   boolean existsByReviewIdAndUserId(Long reviewId, Long userId);
 
   Optional<Comment> findByReviewId(Long reviewId);
+
+  void deleteByStoreId(Long id);
 }

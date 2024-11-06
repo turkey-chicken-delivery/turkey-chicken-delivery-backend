@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,5 +51,12 @@ public class ReviewController {
       @RequestParam(defaultValue = "1", required = false) int page) {
     ReviewListResponseDto reviews = reviewService.getAllReview(storeId, page);
     return ResponseEntity.status(HttpStatus.OK).body(reviews);
+  }
+
+  @DeleteMapping("/reviews/{id}")
+  public ResponseEntity<Void> deleteReview(@PathVariable Long storeId, @PathVariable Long id,
+      @AuthUser User user) {
+    reviewService.deleteReview(storeId, id, user);
+    return ResponseEntity.noContent().build();
   }
 }
