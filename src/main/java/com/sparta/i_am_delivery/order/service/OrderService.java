@@ -10,10 +10,9 @@ import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.domain.user.repository.UserRepository;
-import com.sparta.i_am_delivery.order.dto.orderstatus.OrderStatusRequestDto;
 import com.sparta.i_am_delivery.order.dto.request.OrderRequestDto;
+import com.sparta.i_am_delivery.order.dto.request.OrderStatusRequestDto;
 import com.sparta.i_am_delivery.order.dto.response.OrderResponseDto;
-import com.sparta.i_am_delivery.order.enums.OrderStatus;
 import jakarta.transaction.Transactional;
 import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +73,6 @@ public class OrderService {
         .menu(menu)
         .quantity(quantity)
         .totalPrice(totalPrice)
-        .status(OrderStatus.PENDING) // 기본값 PENDING
         .build();
 
     orderRepository.save(order);
