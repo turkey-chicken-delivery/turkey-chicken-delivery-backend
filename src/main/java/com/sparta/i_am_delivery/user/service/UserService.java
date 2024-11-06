@@ -14,7 +14,7 @@ import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.domain.user.repository.UserRepository;
 import com.sparta.i_am_delivery.menu.dto.info.MenuInfo;
 import com.sparta.i_am_delivery.store.dto.info.StoreInfo;
-import com.sparta.i_am_delivery.user.dto.request.OrderPageReadResponseDto;
+import com.sparta.i_am_delivery.user.dto.response.OrderPageReadResponseDto;
 import com.sparta.i_am_delivery.user.dto.request.UserDeleteRequestDto;
 import com.sparta.i_am_delivery.user.dto.request.UserSignUpRequestDto;
 import com.sparta.i_am_delivery.user.dto.request.UserUpdatePasswordRequestDto;
@@ -138,6 +138,7 @@ public class UserService {
         .totalPrice(order.getTotalPrice())
         .status(order.getStatus())
         .modifiedAt(order.getModifiedAt())
+        .quantity(order.getQuantity())
         .build();
   }
 
