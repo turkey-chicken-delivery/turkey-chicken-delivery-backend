@@ -16,7 +16,7 @@ public class ReviewCreationResponseDto {
 
   public ReviewCreationResponseDto(Review review) {
     this.id = review.getId();
-    this.comment = review.getComment();
+    this.comment = review.getContent();
     this.star = review.getStar();
   }
 
