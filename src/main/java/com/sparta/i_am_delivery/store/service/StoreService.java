@@ -80,4 +80,27 @@ public class StoreService {
 
     return new StoreUpdateResponseDto(updateStore);
   }
+
+  @Transactional
+  public Long deleteStore(Long id, User user) {
+    Store deleteStore = storeRepository.findById(id)
+        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+
+    if (!deleteStore.getOwner().getId().equals(user.getId())) {
+      throw new CustomException(ErrorCode.INVALID_OWNER);
+    }
+    deleteStore.delete();
+    deleteStore.updateStoreStatus();
+    storeRepository.save(deleteStore);
+
+    orderRepository.deleteByStoreId(id);
+    menuRepository.deleteByStoreId(id);
+    reviewRepository.deleteByStoreId(id);
+    likeRepository.deleteByStoreId(id);
+
+    return id;
+  }
+
+
 }
