@@ -1,5 +1,6 @@
 package com.sparta.i_am_delivery.domain.comment.entity;
 
+import com.sparta.i_am_delivery.comment.dto.request.CommentRequestDto;
 import com.sparta.i_am_delivery.common.entity.TimeStamped;
 import com.sparta.i_am_delivery.domain.review.entity.Review;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
@@ -47,5 +48,9 @@ public class Comment extends TimeStamped {
     this.review = review;
     this.user = user;
     this.content = comment;
+  }
+
+  public void updateComment(CommentRequestDto commentRequestDto) {
+    this.content = commentRequestDto.getContent();
   }
 }

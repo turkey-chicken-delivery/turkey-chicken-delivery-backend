@@ -6,11 +6,14 @@ import com.sparta.i_am_delivery.comment.dto.response.CommentCreationResponseDto;
 import com.sparta.i_am_delivery.comment.service.CommentService;
 import com.sparta.i_am_delivery.common.annotation.AuthUser;
 import com.sparta.i_am_delivery.domain.user.entity.User;
+import com.sparta.i_am_delivery.review.dto.response.CommentUpdateResponseDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +34,13 @@ public class CommentController {
         commentRequestDto);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(comment);
+  }
+
+  @PutMapping("/comments/{id}")
+  public ResponseEntity<CommentUpdateResponseDto> updateComment(@PathVariable Long id,
+      @AuthUser User user, @RequestBody @Valid
+  CommentRequestDto commentRequestDto) {
+    CommentUpdateResponseDto comment = commentService.updateComment(id, user, commentRequestDto);
+    return ResponseEntity.status(HttpStatus.OK).body(comment);
   }
 }

@@ -11,8 +11,10 @@ import com.sparta.i_am_delivery.domain.review.repository.ReviewRepository;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
+import com.sparta.i_am_delivery.review.dto.response.CommentUpdateResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,16 +34,28 @@ public class CommentService {
     Review review = reviewRepository.findById(reviewId)
         .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
-    // 이미 해당 유저가 이미 댓글을 작성했는지 확인
+    // 해당 유저가 이미 댓글을 작성했는지 확인
     boolean commentExists = commentRepository.existsByReviewIdAndUserId(reviewId, user.getId());
     if (commentExists) {
       throw new CustomException(ErrorCode.COMMENT_DUPLICATE);
     }
 
     Comment comment = new Comment();
-    comment.createComment(store, review, user, commentRequestDto.getComment());
+    comment.createComment(store, review, user, commentRequestDto.getContent());
     commentRepository.save(comment);
 
     return new CommentCreationResponseDto(comment);
+  }
+
+  @Transactional
+  public CommentUpdateResponseDto updateComment(Long id, User user,
+      CommentRequestDto commentRequestDto) {
+
+    // 리뷰 존재 유무 + 작성자 확인
+    Comment comment = commentRepository.findByIdAndUserId(id, user.getId())
+        .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+
+    comment.updateComment(commentRequestDto);
+    return new CommentUpdateResponseDto(comment);
   }
 }
