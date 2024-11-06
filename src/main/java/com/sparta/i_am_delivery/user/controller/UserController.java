@@ -3,10 +3,7 @@ package com.sparta.i_am_delivery.user.controller;
 import com.sparta.i_am_delivery.common.annotation.AuthUser;
 import com.sparta.i_am_delivery.common.config.jwt.JwtHelper;
 import com.sparta.i_am_delivery.domain.user.entity.User;
-import com.sparta.i_am_delivery.user.dto.request.UserLogInRequestDto;
-import com.sparta.i_am_delivery.user.dto.request.UserSignUpRequestDto;
-import com.sparta.i_am_delivery.user.dto.request.UserUpdateNameRequestDto;
-import com.sparta.i_am_delivery.user.dto.request.UserUpdatePasswordRequestDto;
+import com.sparta.i_am_delivery.user.dto.request.*;
 import com.sparta.i_am_delivery.user.dto.response.UserSignUpResponseDto;
 import com.sparta.i_am_delivery.user.dto.response.UserUpdateNameResponseDto;
 import com.sparta.i_am_delivery.user.service.UserService;
@@ -60,6 +57,15 @@ public class UserController {
       @PathVariable Long id,
       @Valid @RequestBody UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
     userService.updatePassword(user, id, userUpdatePasswordRequestDto);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteUser(
+      @AuthUser User user,
+      @PathVariable Long id,
+      @Valid @RequestBody UserDeleteRequestDto userDeleteRequestDto) {
+    userService.deleteUser(user,id,userDeleteRequestDto);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }

@@ -1,8 +1,8 @@
 package com.sparta.i_am_delivery.common.exception;
 
-import org.springframework.http.HttpStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ public enum ErrorCode {
   PASSWORD_MISMATCH("PASSWORD_MISMATCH", "현재 비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED),
   STORE_OWNER_ACTION_NOT_ALLOWED(
       "STORE_OWNER_ACTION_NOT_ALLOWED", "가게 주인이 할 수 없는 행동입니다", HttpStatus.UNAUTHORIZED),
+  ACTIVE_STORE_EXISTS("ACTIVE_STORE_EXISTS","활성화된 가게가 있어 회원을 삭제할 수 없습니다.",HttpStatus.BAD_REQUEST),
 
 
   // 가게 관련 에러 코드

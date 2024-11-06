@@ -3,14 +3,18 @@ package com.sparta.i_am_delivery.user.service;
 import com.sparta.i_am_delivery.common.config.jwt.JwtHelper;
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
+import com.sparta.i_am_delivery.domain.like.repository.LikeRepository;
+import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.domain.user.repository.UserRepository;
+import com.sparta.i_am_delivery.user.dto.request.UserDeleteRequestDto;
 import com.sparta.i_am_delivery.user.dto.request.UserSignUpRequestDto;
 import com.sparta.i_am_delivery.user.dto.request.UserUpdatePasswordRequestDto;
 import com.sparta.i_am_delivery.user.dto.response.UserSignUpResponseDto;
 import com.sparta.i_am_delivery.user.dto.response.UserUpdateNameResponseDto;
 import com.sparta.i_am_delivery.user.enums.UserType;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +26,8 @@ public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtHelper jwtHelper;
+  private final StoreRepository storeRepository;
+  private final LikeRepository likeRepository;
 
   @Transactional
   public UserSignUpResponseDto signUp(UserSignUpRequestDto userSingUpRequestDto) {
@@ -73,8 +79,20 @@ public class UserService {
     userRepository.save(user);
   }
 
+  @Transactional
+  public void deleteUser(User user, Long id, @Valid UserDeleteRequestDto userDeleteRequestDto) {
+    user.validateUserIdentity(id);
+    user.validateUserPassword(userDeleteRequestDto.getPassword(), passwordEncoder);
+    if (user.isOwner() && storeRepository.existsByOwnerIdAndDeletedAtIsNull(user.getId())) {
+      throw new CustomException(ErrorCode.ACTIVE_STORE_EXISTS);
+    }
+    likeRepository.deleteByUserId(user.getId());
+    user.delete();
+    userRepository.save(user);
+  }
+
   private void isValidateUserUniqueness(String email, String name) {
-    Optional<User> foundUser = userRepository.findByEmailOrName(email, name);
+    Optional<User> foundUser = userRepository.findByEmailOrNameIncludingDeleted(email, name);
     if (foundUser.isPresent()) {
       User existingUser = foundUser.get();
       if (existingUser.getEmail().equals(email)) {

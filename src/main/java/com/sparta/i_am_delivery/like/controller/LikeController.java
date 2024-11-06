@@ -23,8 +23,9 @@ public class LikeController {
   }
 
   @DeleteMapping("/{id}")
-  ResponseEntity<Void> removeToStoreLike(@PathVariable("id") Long id, @AuthUser User user) {
-    likeService.removeToStoreLike(id, user);
+  ResponseEntity<Void> removeToStoreLike(
+      @PathVariable("id") Long id, @PathVariable("storeId") Long storeId, @AuthUser User user) {
+    likeService.removeToStoreLike(id, storeId, user);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }

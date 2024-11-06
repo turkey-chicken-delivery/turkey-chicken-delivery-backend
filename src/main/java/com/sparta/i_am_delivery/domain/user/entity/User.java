@@ -15,11 +15,15 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@Where(clause = "deleted_at IS NULL")
 @NoArgsConstructor
 public class User extends TimeStamped {
   @Id
@@ -46,8 +50,30 @@ public class User extends TimeStamped {
     this.name = name;
     this.type = type;
   }
-public void updateName(String name) {
+
+  public void updateName(String name) {
     this.name = name;
+  }
+
+  public void updatePassword(
+      Long reqUserId,
+      String currentPassword,
+      String changePassword,
+      PasswordEncoder passwordEncoder) {
+    validateUserIdentity(reqUserId);
+    if (!passwordEncoder.matches(currentPassword, this.getPassword())) {
+      throw new CustomException(ErrorCode.PASSWORD_MISMATCH);
+    }
+    if (passwordEncoder.matches(changePassword, this.getPassword())) {
+      throw new CustomException(ErrorCode.INVALID_PASSWORD);
+    }
+    this.password = passwordEncoder.encode(changePassword);
+  }
+
+  @Override
+  public void delete() {
+    this.name = ("deleted_" + this.getName() + this.getId());
+    super.delete();
   }
 
   // 로그인 유효성 처리
@@ -67,18 +93,13 @@ public void updateName(String name) {
     }
   }
 
-  public void updatePassword(
-      Long reqUserId,
-      String currentPassword,
-      String changePassword,
-      PasswordEncoder passwordEncoder) {
-    validateUserIdentity(reqUserId);
-    if (!passwordEncoder.matches(currentPassword, this.getPassword())) {
+  public boolean isOwner() {
+    return this.type == UserType.OWNER;
+  }
+
+  public void validateUserPassword(String reqPassword, PasswordEncoder passwordEncoder) {
+    if (!passwordEncoder.matches(reqPassword, this.getPassword())) {
       throw new CustomException(ErrorCode.PASSWORD_MISMATCH);
     }
-    if (passwordEncoder.matches(changePassword, this.getPassword())) {
-      throw new CustomException(ErrorCode.INVALID_PASSWORD);
-    }
-    this.password = passwordEncoder.encode(changePassword);
   }
 }
