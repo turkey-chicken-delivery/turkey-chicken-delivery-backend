@@ -2,6 +2,7 @@ package com.sparta.i_am_delivery.store.service;
 
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
+import com.sparta.i_am_delivery.domain.comment.repository.CommentRepository;
 import com.sparta.i_am_delivery.domain.like.repository.LikeRepository;
 import com.sparta.i_am_delivery.domain.menu.repository.MenuRepository;
 import com.sparta.i_am_delivery.domain.order.repository.OrderRepository;
@@ -24,6 +25,7 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class StoreService {
 
+  private final CommentRepository commentRepository;
   private final StoreRepository storeRepository;
   private final OrderRepository orderRepository;
   private final MenuRepository menuRepository;
@@ -82,7 +84,7 @@ public class StoreService {
   }
 
   @Transactional
-  public Long deleteStore(Long id, User user) {
+  public void deleteStore(Long id, User user) {
     Store deleteStore = storeRepository.findById(id)
         .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
@@ -92,14 +94,15 @@ public class StoreService {
     }
     deleteStore.delete();
     deleteStore.updateStoreStatus();
-    storeRepository.save(deleteStore);
 
+    storeRepository.save(deleteStore);
+    commentRepository.deleteByStoreId(id);
     orderRepository.deleteByStoreId(id);
     menuRepository.deleteByStoreId(id);
     reviewRepository.deleteByStoreId(id);
     likeRepository.deleteByStoreId(id);
 
-    return id;
+
   }
 
 
