@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
+  Optional<Comment> findByIdAndUserId(Long reviewId, Long userId);
+
   boolean existsByReviewIdAndUserId(Long reviewId, Long userId);
 
   Optional<Comment> findByReviewId(Long reviewId);
