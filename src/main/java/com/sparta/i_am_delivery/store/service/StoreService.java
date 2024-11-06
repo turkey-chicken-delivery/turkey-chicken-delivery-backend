@@ -17,6 +17,7 @@ import com.sparta.i_am_delivery.store.dto.response.StoreCreateResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreDetailResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreUpdateResponseDto;
 import com.sparta.i_am_delivery.user.enums.UserType;
+import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,8 +84,10 @@ public class StoreService {
   @Transactional
   public StoreUpdateResponseDto updateStore(Long id, StoreUpdateRequestDto requestDto, User user) {
 
-    Store updateStore = storeRepository.findById(id)
-        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+    Store updateStore =
+        storeRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
     if (!updateStore.getOwner().getId().equals(user.getId())) {
       throw new CustomException(ErrorCode.INVALID_OWNER);
@@ -97,8 +100,10 @@ public class StoreService {
 
   @Transactional
   public void deleteStore(Long id, User user) {
-    Store deleteStore = storeRepository.findById(id)
-        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+    Store deleteStore =
+        storeRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
 
     if (!deleteStore.getOwner().getId().equals(user.getId())) {

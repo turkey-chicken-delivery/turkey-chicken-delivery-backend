@@ -36,16 +36,6 @@ public class Store extends TimeStamped {
   private Long minimumPrice;
   private String ownerMessage;
 
-  @Enumerated(EnumType.STRING)
-  private StoreStatus storeStatus = StoreStatus.OPEN;
-
-
-  public void updateStoreStatus() {
-    if (this.getDeletedAt() != null) {
-      this.storeStatus = StoreStatus.DELETE;
-    }
-  }
-
   @Builder
   public Store(
       User owner, String name, LocalTime openTime, LocalTime closeTime, Long minimumPrice, String ownerMessage) {
