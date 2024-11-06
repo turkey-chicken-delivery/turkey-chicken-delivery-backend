@@ -44,7 +44,11 @@ public class LikeService {
   }
 
   @Transactional
-  public void removeToStoreLike(Long id, User user) {
+  public void removeToStoreLike(Long id, Long storeId, User user) {
+    Store store =
+        storeRepository
+            .findById(storeId)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
     Like like =
         likeRepository
             .findByIdAndUserId(id, user.getId())

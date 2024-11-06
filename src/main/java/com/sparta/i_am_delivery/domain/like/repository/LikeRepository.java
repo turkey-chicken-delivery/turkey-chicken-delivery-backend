@@ -14,4 +14,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
   @Query(
       "SELECT l FROM Like l JOIN FETCH l.user JOIN FETCH l.store WHERE l.id = :likeId AND l.user.id = :userId")
   Optional<Like> findByIdAndUserId(@Param("likeId") Long likeId, @Param("userId") Long userId);
+
+  void deleteByUserId(Long id);
 }
