@@ -1,8 +1,9 @@
 package com.sparta.i_am_delivery.menu.controller;
 
 import com.sparta.i_am_delivery.menu.dto.request.MenuRequestDto;
+import com.sparta.i_am_delivery.menu.dto.response.MenuCreateResponseDto;
+import com.sparta.i_am_delivery.menu.dto.response.MenuUpdateResponseDto;
 import com.sparta.i_am_delivery.menu.dto.response.MenuPageReadResponseDto;
-import com.sparta.i_am_delivery.menu.dto.response.MenuResponseDto;
 import com.sparta.i_am_delivery.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,21 +18,25 @@ public class MenuController {
 
   private final MenuService menuService;
 
-  @PostMapping("/menus")
-  public ResponseEntity<MenuResponseDto> createMenu(
-      @PathVariable Long storeId, @RequestBody MenuRequestDto requestDto) {
-    MenuResponseDto menu = menuService.createMenu(storeId, requestDto);
+    @PostMapping("/menus")
+    public ResponseEntity<MenuCreateResponseDto> createMenu(@PathVariable Long storeId, @RequestBody MenuRequestDto requestDto) {
+        MenuCreateResponseDto menu = menuService.createMenu(storeId, requestDto);
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(menu);
-  }
+        return ResponseEntity.status(HttpStatus.CREATED).body(menu);
+    }
 
-  @PutMapping("/menus/{Id}")
-  public ResponseEntity<MenuResponseDto> updateMenu(
-      @PathVariable Long Id, @RequestBody MenuRequestDto requestDto) {
-    MenuResponseDto menu = menuService.updateMenu(Id, requestDto);
+    @PutMapping("/menus/{Id}")
+    public ResponseEntity<MenuUpdateResponseDto> updateMenu(@PathVariable Long Id, @RequestBody MenuRequestDto requestDto) {
+        MenuUpdateResponseDto menu = menuService.updateMenu(Id, requestDto);
 
-    return ResponseEntity.status(HttpStatus.OK).body(menu);
-  }
+        return ResponseEntity.status(HttpStatus.OK).body(menu);
+    }
+
+    @DeleteMapping("/menus/{id}")
+    public ResponseEntity<Void> deleteMenu(@PathVariable Long id) {
+        menuService.deleteMenu(id);
+        return ResponseEntity.noContent().build();
+    }
 
   @GetMapping("/menus")
   public ResponseEntity<Page<MenuPageReadResponseDto>> getAllStoresMenu(
