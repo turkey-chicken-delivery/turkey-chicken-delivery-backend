@@ -15,6 +15,11 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
   @Query("SELECT s FROM Store s JOIN FETCH s.owner WHERE s.id = :storeId AND s.owner.id = :userId")
   Optional<Store> findByIdAndUserId(@Param("storeId") Long storeId, @Param("userId") Long userId);
 
+  @Query("SELECT s FROM Store s WHERE s.id = :id")
+  Store findByIdIncludeDeleted(@Param("id") Long id);
+
+  int countByOwner(User user);
+
   boolean existsByOwnerIdAndDeletedAtIsNull(Long id);
   int countByOwnerAndDeletedAtIsNull(User user);
 }
