@@ -4,7 +4,6 @@ import com.sparta.i_am_delivery.common.entity.TimeStamped;
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.user.entity.User;
-import com.sparta.i_am_delivery.store.Enum.StoreStatus;
 import com.sparta.i_am_delivery.store.dto.request.StoreUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -31,6 +30,7 @@ public class Store extends TimeStamped {
 
   @Column(nullable = false)
   private String name;
+
   private LocalTime openTime;
   private LocalTime closeTime;
   private Long minimumPrice;
