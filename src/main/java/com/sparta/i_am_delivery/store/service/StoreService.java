@@ -14,11 +14,15 @@ import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.store.dto.request.StoreCreateRequestDto;
 import com.sparta.i_am_delivery.store.dto.request.StoreUpdateRequestDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreCreateResponseDto;
+import com.sparta.i_am_delivery.store.dto.response.StorePageReadResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreDetailResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreUpdateResponseDto;
 import com.sparta.i_am_delivery.user.enums.UserType;
 import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,5 +123,19 @@ public class StoreService {
     menuRepository.deleteByStoreId(id);
     reviewRepository.deleteByStoreId(id);
     likeRepository.deleteByStoreId(id);
+  }
+
+  public Page<StorePageReadResponseDto> getAllStores(int pageNo, int pageSize) {
+    PageRequest pageRequest = PageRequest.of(pageNo-1, pageSize, Sort.Direction.DESC, "modifiedAt");
+    Page<Store> stores = storeRepository.findAll(pageRequest);
+    return stores.map(
+        store ->
+            StorePageReadResponseDto.builder()
+                .id(store.getId())
+                .name(store.getName())
+                .openTime(store.getOpenTime())
+                .closeTime(store.getCloseTime())
+                .minimumPrice(store.getMinimumPrice())
+                .build());
   }
 }

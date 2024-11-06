@@ -72,13 +72,13 @@ public class UserController {
   }
 
   @GetMapping("/{id}/orders")
-  public ResponseEntity<Page<OrderPageReadResponseDto>> getUsersOrder(
+  public ResponseEntity<Page<OrderPageReadResponseDto>> getUserOrders(
       @AuthUser User user,
       @PathVariable Long id,
       @RequestParam(defaultValue = "1") int pageNo,
       @RequestParam(defaultValue = "10") int pageSize) {
     Page<OrderPageReadResponseDto> orderPage =
-        userService.getUsersOrder(pageNo, pageSize, user, id);
+        userService.getUserOrders(pageNo, pageSize, user, id);
     return ResponseEntity.status(HttpStatus.OK).body(orderPage);
   }
 }
