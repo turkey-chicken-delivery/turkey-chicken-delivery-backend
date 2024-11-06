@@ -6,6 +6,7 @@ import com.sparta.i_am_delivery.domain.menu.entity.Menu;
 import com.sparta.i_am_delivery.domain.menu.repository.MenuRepository;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
+import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.menu.dto.request.MenuRequestDto;
 import com.sparta.i_am_delivery.menu.dto.response.MenuPageReadResponseDto;
 import com.sparta.i_am_delivery.menu.dto.response.MenuResponseDto;
@@ -24,11 +25,12 @@ public class MenuService {
   private final MenuRepository menuRepository;
   private final StoreRepository storeRepository;
 
-  public MenuResponseDto createMenu(Long storeId, MenuRequestDto requestDto) {
-    Store store =
-        storeRepository
-            .findById(storeId)
-            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+  public MenuResponseDto createMenu(Long storeId, MenuRequestDto requestDto, User user) {
+    Store store = storeRepository.findById(storeId).orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+    validateOwner(store, user);
+
+    validateMenuNameUniqueness(storeId, requestDto.getName());
 
     Menu menu = new Menu();
     menu.create(store, requestDto);
@@ -36,11 +38,12 @@ public class MenuService {
     return new MenuResponseDto(menu);
   }
 
-  public MenuResponseDto updateMenu(Long Id, MenuRequestDto requestDto) {
-    Menu menu =
-        menuRepository
-            .findById(Id)
-            .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
+  public MenuResponseDto updateMenu(Long id, MenuRequestDto requestDto, Long storeId, User user) {
+    Menu menu = menuRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
+
+    validateOwner(menu.getStore(), user);
+
+    validateMenuNameUniqueness(menu.getStore().getId(), requestDto.getName());
 
     menu.update(requestDto);
     menuRepository.save(menu);
@@ -49,18 +52,23 @@ public class MenuService {
 
   public Page<MenuPageReadResponseDto> getAllStoresMenu(Long storeId, int page, int size) {
     PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.Direction.DESC, "modifiedAt");
-    Store store =
-        storeRepository
-            .findById(storeId)
-            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+    Store store = storeRepository.findById(storeId).orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
     Page<Menu> menus = menuRepository.findAllByStoreId(store.getId(), pageRequest);
-    return menus.map(
-        menu ->
-            MenuPageReadResponseDto.builder()
-                .id(menu.getId())
-                .name(menu.getName())
-                .price(menu.getPrice())
-                .createdAt(menu.getCreatedAt())
-                .build());
+    return menus.map(menu -> MenuPageReadResponseDto.builder().id(menu.getId()).name(menu.getName()).price(menu.getPrice()).createdAt(menu.getCreatedAt()).build());
   }
+
+  private void validateOwner(Store store, User user) {
+    if (!store.getOwner().getId().equals(user.getId())) {
+      throw new CustomException(ErrorCode.INVALID_OWNER);
+    }
+  }
+
+  private void validateMenuNameUniqueness(Long storeId, String menuName) {
+    boolean exists = menuRepository.existsByStoreIdAndName(storeId, menuName);
+    if (exists) {
+      throw new CustomException(ErrorCode.DUPLICATE_MENU_NAME);
+    }
+  }
+
+
 }
