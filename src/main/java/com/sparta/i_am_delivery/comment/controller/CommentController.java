@@ -5,7 +5,6 @@ import com.sparta.i_am_delivery.comment.dto.request.CommentRequestDto;
 import com.sparta.i_am_delivery.comment.dto.response.CommentCreationResponseDto;
 import com.sparta.i_am_delivery.comment.service.CommentService;
 import com.sparta.i_am_delivery.common.annotation.AuthUser;
-import com.sparta.i_am_delivery.domain.comment.repository.CommentRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
 
   private final CommentService commentService;
-  private final CommentRepository commentRepository;
 
   @PostMapping("/reviews/{reviewId}/comments")
   public ResponseEntity<CommentCreationResponseDto> createComment(@PathVariable Long storeId,

@@ -12,8 +12,8 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
   Optional<Store> findById(Long storeId);
 
   // JOIN FETCH를 사용해서 스토어 ID와 사용자 ID로 스토어를 조회하여 해당 스토어가 특정 사용자에 의해 개설된 것인지 확인
-  @Query("SELECT r FROM Review r JOIN FETCH r.user WHERE r.id = :storeId AND r.user.id = :userId")
-  Optional<Store> findByIdAndUserId(@Param("storeId") Long reviewId, @Param("userId") Long userId);
+  @Query("SELECT s FROM Store s JOIN FETCH s.owner WHERE s.id = :storeId AND s.owner.id = :userId")
+  Optional<Store> findByIdAndUserId(@Param("storeId") Long storeId, @Param("userId") Long userId);
 
   int countByOwner(User user);
 
