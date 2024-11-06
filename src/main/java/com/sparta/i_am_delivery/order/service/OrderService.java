@@ -14,6 +14,7 @@ import com.sparta.i_am_delivery.order.dto.request.OrderRequestDto;
 import com.sparta.i_am_delivery.order.dto.request.OrderStatusRequestDto;
 import com.sparta.i_am_delivery.order.dto.response.CreateResponseDto;
 import com.sparta.i_am_delivery.order.dto.response.DeliveryStatusResponseDto;
+import com.sparta.i_am_delivery.order.dto.response.OrderDetailResponseDto;
 import com.sparta.i_am_delivery.order.dto.response.UpdatedResponseDto;
 import com.sparta.i_am_delivery.order.enums.OrderStatus;
 import jakarta.transaction.Transactional;
@@ -160,5 +161,11 @@ public class OrderService {
         .orderStatus(order.getStatus())
         .modifiedAt(order.getModifiedAt())
         .build();
+  }
+
+  public OrderDetailResponseDto getOrder(Long id, User user) {
+    Order order = orderRepository.findByIdAndUserId(id, user.getId())
+        .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+    return new OrderDetailResponseDto(order);
   }
 }
