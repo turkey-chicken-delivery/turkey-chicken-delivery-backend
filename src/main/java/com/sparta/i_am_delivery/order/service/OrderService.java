@@ -88,6 +88,7 @@ public class OrderService {
         .build();
   }
 
+  // 주문 상태 변경 (유저)
   @Transactional
   public OrderResponseDto updateOrderStatus(Long ownerId, Long storeId, Long orderId,
       OrderStatusRequestDto orderStatusRequestDto) {
@@ -119,16 +120,12 @@ public class OrderService {
     // 응답 DTO 생성
     return OrderResponseDto.builder()
         .orderId(order.getId())
-        .storeId(store.getId())
-        .userId(order.getUser().getId())
-        .menuId(order.getMenu().getId())
-        .quantity(order.getQuantity())
-        .totalPrice(order.getTotalPrice())
         .orderStatus(order.getStatus())
         .createdAt(order.getCreatedAt())
         .build();
   }
 
+  // 주문 상태 변경 (취소)
   @Transactional
   public OrderResponseDto cancelOrder(Long userId, Long storeId, Long orderId,
       OrderStatusRequestDto orderStatusRequestDto) {
