@@ -2,6 +2,7 @@ package com.sparta.i_am_delivery.domain.comment.entity;
 
 import com.sparta.i_am_delivery.common.entity.TimeStamped;
 import com.sparta.i_am_delivery.domain.review.entity.Review;
+import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +27,10 @@ public class Comment extends TimeStamped {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "store_id", nullable = false)
+  private Store store;
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "review_id", nullable = false)
   private Review review;
 
@@ -35,12 +39,12 @@ public class Comment extends TimeStamped {
   private User user;
 
   @Column(nullable = false)
-  private String content;
+  private String comment;
 
-  @Builder
-  public Comment(Review review, User user, String content) {
+  public void createComment(Store store, Review review, User user, String comment) {
+    this.store = store;
     this.review = review;
     this.user = user;
-    this.content = content;
+    this.comment = comment;
   }
 }
