@@ -55,7 +55,8 @@ public class Order extends TimeStamped {
 
   // 주문 상태
   @Enumerated(EnumType.STRING)
-  private OrderStatus status;
+  @Column(nullable = false)
+  private OrderStatus status = OrderStatus.PENDING; // 초기값 PENDING으로 설정
 
   @Builder
   public Order(User user, Store store, Menu menu, Integer quantity, Long totalPrice,
