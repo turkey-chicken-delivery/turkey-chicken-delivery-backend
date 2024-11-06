@@ -29,25 +29,29 @@ public class Store extends TimeStamped {
 
   @Column(nullable = false)
   private String name;
-
   private LocalTime openTime;
   private LocalTime closeTime;
   private Long minimumPrice;
+  private String ownerMessage;
 
   @Builder
   public Store(
-      User owner, String name, LocalTime openTime, LocalTime closeTime, Long minimumPrice) {
+      User owner, String name, LocalTime openTime, LocalTime closeTime, Long minimumPrice, String ownerMessage) {
     this.owner = owner;
     this.name = name;
     this.openTime = openTime;
     this.closeTime = closeTime;
     this.minimumPrice = minimumPrice;
+    this.ownerMessage = ownerMessage;
   }
 
   public void update(StoreUpdateRequestDto requestDto) {
     this.openTime = requestDto.getOpenTime();
     this.closeTime = requestDto.getCloseTime();
     this.minimumPrice = requestDto.getMinimumPrice();
+
+    this.ownerMessage = requestDto.getOwnerMessage();
+
   }
 
   public void validateOwner(Long userId) {
