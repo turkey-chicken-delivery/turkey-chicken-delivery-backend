@@ -104,7 +104,6 @@ public class UserService {
     userRepository.save(user);
   }
 
-  // 가게삭제 -> 메뉴 하드딜리트 -> 메뉴 과거정보조차없음 ->
   @Transactional
   public Page<OrderPageReadResponseDto> getUsersOrder(
       int pageNo, int pageSize, User user, Long id) {
