@@ -4,6 +4,7 @@ import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.comment.repository.CommentRepository;
 import com.sparta.i_am_delivery.domain.like.repository.LikeRepository;
+import com.sparta.i_am_delivery.domain.menu.entity.Menu;
 import com.sparta.i_am_delivery.domain.menu.repository.MenuRepository;
 import com.sparta.i_am_delivery.domain.order.repository.OrderRepository;
 import com.sparta.i_am_delivery.domain.review.repository.ReviewRepository;
@@ -13,6 +14,7 @@ import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.store.dto.request.StoreCreateRequestDto;
 import com.sparta.i_am_delivery.store.dto.request.StoreUpdateRequestDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreCreateResponseDto;
+import com.sparta.i_am_delivery.store.dto.response.StoreDetailResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreUpdateResponseDto;
 import com.sparta.i_am_delivery.user.enums.UserType;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +57,7 @@ public class StoreService {
         .openTime(requestDto.getOpenTime())
         .closeTime(requestDto.getCloseTime())
         .minimumPrice(requestDto.getMinimumPrice())
+        .ownerMessage(requestDto.getOwnerMessage())
         .build();
 
     Store saveStore = storeRepository.save(store);
@@ -67,6 +71,14 @@ public class StoreService {
     }
   }
 
+  public StoreDetailResponseDto getDetailStore(Long id) {
+    Store store = storeRepository.findById(id)
+        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+    // select * from Menu where storeId = '굽네치킨(1) and price = 5000 ;
+    List<Menu> menus = menuRepository.findAllByStoreId(id);
+    return new StoreDetailResponseDto(store, menus);
+  }
 
   @Transactional
   public StoreUpdateResponseDto updateStore(Long id, StoreUpdateRequestDto requestDto, User user) {

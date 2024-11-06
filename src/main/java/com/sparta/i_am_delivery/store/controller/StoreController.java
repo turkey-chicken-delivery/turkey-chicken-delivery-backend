@@ -5,6 +5,7 @@ import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.store.dto.request.StoreCreateRequestDto;
 import com.sparta.i_am_delivery.store.dto.request.StoreUpdateRequestDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreCreateResponseDto;
+import com.sparta.i_am_delivery.store.dto.response.StoreDetailResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreUpdateResponseDto;
 import com.sparta.i_am_delivery.store.service.StoreService;
 import jakarta.validation.Valid;
@@ -25,6 +26,13 @@ public class StoreController {
     StoreCreateResponseDto responseDto = storeService.createStore(requestDto, user);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+  }
+
+
+  @GetMapping("/{id}")
+  public ResponseEntity<StoreDetailResponseDto> getDetailStore(@PathVariable Long id) {
+    StoreDetailResponseDto store = storeService.getDetailStore(id);
+    return ResponseEntity.status(HttpStatus.OK).body(store);
   }
 
   @PutMapping("/{id}")
