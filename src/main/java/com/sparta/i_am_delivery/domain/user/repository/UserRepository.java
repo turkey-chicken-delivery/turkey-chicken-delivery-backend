@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-  //    Optional<User> findByEmailOrName(String email, String name);
-
   // 삭제된 유저의 email 이름을 조회할 수 있도록 쿼리 작성
   @Query(value = "SELECT * FROM users WHERE (email = :email OR name = :name)", nativeQuery = true)
   Optional<User> findByEmailOrNameIncludingDeleted(
