@@ -11,4 +11,8 @@ public class OrderStatusRequestDto {
 
   @NotNull(message = "변경할 주문 상태를 입력해주세요.")
   private OrderStatus orderStatus;
+
+  public OrderStatusRequestDto(@NotNull OrderStatus orderStatus) {
+    this.orderStatus = orderStatus;
+  }
 }
