@@ -110,7 +110,7 @@ public class StoreService {
       throw new CustomException(ErrorCode.INVALID_OWNER);
     }
     deleteStore.delete();
-    deleteStore.updateStoreStatus();
+
 
     storeRepository.save(deleteStore);
     commentRepository.deleteByStoreId(id);
@@ -120,6 +120,20 @@ public class StoreService {
     likeRepository.deleteByStoreId(id);
 
 
+  }
+
+  public Page<StorePageReadResponseDto> getAllStores(int pageNo, int pageSize) {
+    PageRequest pageRequest = PageRequest.of(pageNo-1, pageSize, Sort.Direction.DESC, "modifiedAt");
+    Page<Store> stores = storeRepository.findAll(pageRequest);
+    return stores.map(
+        store ->
+            StorePageReadResponseDto.builder()
+                .id(store.getId())
+                .name(store.getName())
+                .openTime(store.getOpenTime())
+                .closeTime(store.getCloseTime())
+                .minimumPrice(store.getMinimumPrice())
+                .build());
   }
 
 

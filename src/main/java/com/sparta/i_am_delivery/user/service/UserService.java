@@ -105,7 +105,7 @@ public class UserService {
   }
 
   @Transactional
-  public Page<OrderPageReadResponseDto> getUsersOrder(
+  public Page<OrderPageReadResponseDto> getUserOrders(
       int pageNo, int pageSize, User user, Long id) {
     user.validateUserIdentity(id);
     PageRequest pageRequest =
