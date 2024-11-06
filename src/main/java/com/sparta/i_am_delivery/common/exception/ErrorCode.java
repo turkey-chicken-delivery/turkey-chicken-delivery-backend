@@ -31,7 +31,7 @@ public enum ErrorCode {
   // 가게 관련 에러 코드
   STORE_NOT_FOUND("STORE_NOT_FOUND", "요청자의 가게를 찾을 수 없거나 요청자의 정보와 가게 정보가 일치하지 않습니다.",
       HttpStatus.NOT_FOUND),
-  INVALID_OWNER("INVALID_OWNER", "사장님이 아니면 가게를 생성 할 수 없습니다.", HttpStatus.FORBIDDEN),
+  INVALID_OWNER("INVALID_OWNER", "사장님이 아니면 할 수 없는 기능입니다.", HttpStatus.FORBIDDEN),
   STORE_BAD_REQUEST("STORE_BAD_REQUEST", "오픈 시간은 마감 시간보다 이전이어야 합니다.", HttpStatus.BAD_REQUEST),
   TOO_MANY_STORE("TOO_MANY_STORE", "가게는 3개이상 생성 할 수 없습니다.", HttpStatus.FORBIDDEN),
   STORE_CLOSED("STORE_CLOSED", "가게가 현재 영업 중이 아닙니다.", HttpStatus.BAD_REQUEST),
@@ -55,7 +55,6 @@ public enum ErrorCode {
   INVALID_QUANTITY("INVALID_QUANTITY", "수량은 1 이상의 양수여야 합니다.", HttpStatus.BAD_REQUEST),
   CANNOT_ORDER_OWN_STORE("CANNOT_ORDER_OWN_STORE", "사장님은 자신의 가게에 주문 할 수 없습니다",
       HttpStatus.BAD_REQUEST),
-
   // 리뷰 관련 에러 코드
   REVIEW_NOT_FOUND("REVIEW_NOT_FOUND", "요청자의 리뷰를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   INVALID_STAR_RATING("INVALID_STAR_RATING", "별점은 1에서 5 사이여야 합니다.", HttpStatus.BAD_REQUEST),

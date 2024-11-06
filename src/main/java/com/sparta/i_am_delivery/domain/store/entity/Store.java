@@ -47,7 +47,6 @@ public class Store extends TimeStamped {
     this.ownerMessage = ownerMessage;
   }
 
-
   public void update(StoreUpdateRequestDto requestDto) {
     this.openTime = requestDto.getOpenTime();
     this.closeTime = requestDto.getCloseTime();
@@ -56,12 +55,9 @@ public class Store extends TimeStamped {
 
   }
 
-
   public void validateOwner(Long userId) {
     if (this.owner.getId().equals(userId)) {
       throw new CustomException(ErrorCode.STORE_OWNER_ACTION_NOT_ALLOWED);
     }
   }
-
-
 }
