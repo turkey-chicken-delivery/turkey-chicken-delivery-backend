@@ -2,6 +2,10 @@ package com.sparta.i_am_delivery.store.service;
 
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
+import com.sparta.i_am_delivery.domain.like.repository.LikeRepository;
+import com.sparta.i_am_delivery.domain.menu.repository.MenuRepository;
+import com.sparta.i_am_delivery.domain.order.repository.OrderRepository;
+import com.sparta.i_am_delivery.domain.review.repository.ReviewRepository;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
@@ -21,7 +25,10 @@ import java.time.LocalTime;
 public class StoreService {
 
   private final StoreRepository storeRepository;
-
+  private final OrderRepository orderRepository;
+  private final MenuRepository menuRepository;
+  private final ReviewRepository reviewRepository;
+  private final LikeRepository likeRepository;
 
   @Transactional
   public StoreCreateResponseDto createStore(StoreCreateRequestDto requestDto, User user) {
@@ -86,6 +93,11 @@ public class StoreService {
     deleteStore.delete();
     deleteStore.updateStoreStatus();
     storeRepository.save(deleteStore);
+
+    orderRepository.deleteByStoreId(id);
+    menuRepository.deleteByStoreId(id);
+    reviewRepository.deleteByStoreId(id);
+    likeRepository.deleteByStoreId(id);
 
     return id;
   }
