@@ -114,7 +114,7 @@ public class ReviewService {
         .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
     if (!review.getStore().getId().equals(storeId)) {
-      throw new CustomException(ErrorCode.REVIEW_NOT_BELONG_TO_STORE);
+      throw new CustomException(ErrorCode.COMMENT_NOT_BELONG_TO_STORE);
     }
     if (!review.getUser().getId().equals(user.getId())) {
       throw new CustomException(ErrorCode.NOT_AUTHOR_OF_REVIEW);

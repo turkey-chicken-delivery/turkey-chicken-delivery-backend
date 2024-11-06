@@ -58,4 +58,18 @@ public class CommentService {
     comment.updateComment(commentRequestDto);
     return new CommentUpdateResponseDto(comment);
   }
+
+  @Transactional
+  public void deleteComment(Long storeId, Long id, User user) {
+    Comment comment = commentRepository.findById(id)
+        .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+
+    if (!comment.getStore().getId().equals(storeId)) {
+      throw new CustomException(ErrorCode.COMMENT_NOT_BELONG_TO_STORE);
+    }
+    if (!comment.getUser().getId().equals(user.getId())) {
+      throw new CustomException(ErrorCode.NOT_AUTHOR_OF_COMMENT);
+    }
+    commentRepository.delete(comment);
+  }
 }
