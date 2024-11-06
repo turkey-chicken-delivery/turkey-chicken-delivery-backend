@@ -36,8 +36,10 @@ public class ReviewService {
             OrderStatus.COMPLETED)
         .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_COMPLETED));
 
-    if (reviewRepository.findByOrderId(order.getId()).isPresent()) {
-      throw new CustomException(ErrorCode.REVIEW_ALREADY_EXISTS);
+    // 이미 해당 유저가 리뷰를 작성했는지 확인
+    boolean commentExists = reviewRepository.existsByOrderId(order.getId());
+    if (commentExists) {
+      throw new CustomException(ErrorCode.REVIEW_DUPLICATE);
     }
 
     Review review = new Review();

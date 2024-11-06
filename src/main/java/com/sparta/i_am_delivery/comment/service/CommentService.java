@@ -36,7 +36,7 @@ public class CommentService {
     // 이미 해당 유저가 이미 댓글을 작성했는지 확인
     boolean commentExists = commentRepository.existsByReviewIdAndUserId(reviewId, user.getId());
     if (commentExists) {
-      throw new CustomException(ErrorCode.DUPLICATE_COMMENT);
+      throw new CustomException(ErrorCode.COMMENT_DUPLICATE);
     }
 
     Comment comment = new Comment();

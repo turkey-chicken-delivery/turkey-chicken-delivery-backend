@@ -56,14 +56,14 @@ public enum ErrorCode {
   REVIEW_NOT_FOUND("REVIEW_NOT_FOUND", "리뷰를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   INVALID_STAR_RATING("INVALID_STAR_RATING", "별점은 1에서 5 사이여야 합니다.", HttpStatus.BAD_REQUEST),
   INVALID_STORE_OR_ORDER("INVALID_STORE_OR_ORDER", "유효하지 않은 가게 또는 주문입니다.", HttpStatus.BAD_REQUEST),
-  REVIEW_ALREADY_EXISTS("REVIEW_ALREADY_EXISTS", "이미 리뷰가 존재합니다.", HttpStatus.CONFLICT),
   REVIEW_INVALID_REQUEST("REVIEW_INVALID_REQUEST", "리뷰 수정 권한이 없습니다.", HttpStatus.BAD_REQUEST),
+  REVIEW_DUPLICATE("REVIEW_DUPLICATE", "이미 리뷰가 존재합니다.", HttpStatus.BAD_REQUEST),
 
 
   // 댓글 관련 에러 코드
   COMMENT_NOT_FOUND("COMMENT_NOT_FOUND", "댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   NO_COMMENT_PERMISSION("NO_COMMENT_PERMISSION", "댓글 수정/삭제 권한이 없습니다.", HttpStatus.FORBIDDEN),
-  DUPLICATE_COMMENT("DUPLICATE_COMMENT", "이미 작성하셨습니다.", HttpStatus.BAD_REQUEST),
+  COMMENT_DUPLICATE("DUPLICATE_COMMENT", "이미 작성하셨습니다.", HttpStatus.BAD_REQUEST),
 
   // 즐겨찾기 관련 에러 코드
   LIKE_NOT_FOUND("LIKE_NOT_FOUND", "즐겨찾기를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
