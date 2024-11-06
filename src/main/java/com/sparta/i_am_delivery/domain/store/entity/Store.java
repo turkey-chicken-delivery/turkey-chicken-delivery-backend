@@ -6,11 +6,12 @@ import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.store.dto.request.StoreUpdateRequestDto;
 import jakarta.persistence.*;
-import java.time.LocalTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
+
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -49,7 +50,6 @@ public class Store extends TimeStamped {
     this.openTime = requestDto.getOpenTime();
     this.closeTime = requestDto.getCloseTime();
     this.minimumPrice = requestDto.getMinimumPrice();
-
     this.ownerMessage = requestDto.getOwnerMessage();
 
   }

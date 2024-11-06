@@ -1,9 +1,12 @@
 package com.sparta.i_am_delivery.menu.controller;
 
+import com.sparta.i_am_delivery.common.annotation.AuthUser;
+import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.menu.dto.request.MenuRequestDto;
 import com.sparta.i_am_delivery.menu.dto.response.MenuPageReadResponseDto;
 import com.sparta.i_am_delivery.menu.dto.response.MenuResponseDto;
 import com.sparta.i_am_delivery.menu.service.MenuService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,16 +22,16 @@ public class MenuController {
 
   @PostMapping("/menus")
   public ResponseEntity<MenuResponseDto> createMenu(
-      @PathVariable Long storeId, @RequestBody MenuRequestDto requestDto) {
-    MenuResponseDto menu = menuService.createMenu(storeId, requestDto);
+      @Valid @AuthUser User user, @PathVariable Long storeId, @RequestBody MenuRequestDto requestDto) {
+    MenuResponseDto menu = menuService.createMenu(storeId, requestDto, user);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(menu);
   }
 
   @PutMapping("/menus/{Id}")
   public ResponseEntity<MenuResponseDto> updateMenu(
-      @PathVariable Long Id, @RequestBody MenuRequestDto requestDto) {
-    MenuResponseDto menu = menuService.updateMenu(Id, requestDto);
+      @PathVariable Long Id, @AuthUser User user, @RequestBody MenuRequestDto requestDto, @PathVariable Long storeId) {
+    MenuResponseDto menu = menuService.updateMenu(Id, requestDto, storeId, user);
 
     return ResponseEntity.status(HttpStatus.OK).body(menu);
   }
