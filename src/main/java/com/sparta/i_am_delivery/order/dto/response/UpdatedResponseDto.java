@@ -1,13 +1,14 @@
 package com.sparta.i_am_delivery.order.dto.response;
 
 import com.sparta.i_am_delivery.order.enums.OrderStatus;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class OrderResponseDto {
+@NoArgsConstructor
+public class UpdatedResponseDto {
 
   private Long orderId;
   private Long storeId;
@@ -17,10 +18,11 @@ public class OrderResponseDto {
   private Long totalPrice;
   private OrderStatus orderStatus;
   private LocalDateTime createdAt;
+  private LocalDateTime modifiedAt;
 
   @Builder
-  public OrderResponseDto(Long orderId, Long storeId, Long userId, Long menuId, Integer quantity,
-      Long totalPrice, OrderStatus orderStatus, LocalDateTime createdAt) {
+  public UpdatedResponseDto(Long orderId, Long storeId, Long userId, Long menuId, Integer quantity,
+      Long totalPrice, OrderStatus orderStatus, LocalDateTime createdAt, LocalDateTime modifiedAt) {
     this.orderId = orderId;
     this.storeId = storeId;
     this.userId = userId;
@@ -29,5 +31,6 @@ public class OrderResponseDto {
     this.totalPrice = totalPrice;
     this.orderStatus = orderStatus;
     this.createdAt = createdAt;
+    this.modifiedAt = modifiedAt;
   }
 }

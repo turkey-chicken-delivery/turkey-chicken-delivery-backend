@@ -48,10 +48,12 @@ public enum ErrorCode {
   ORDER_NOT_FOUND("ORDER_NOT_FOUND", "주문을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
   ORDER_NOT_COMPLETED("ORDER_NOT_COMPLETED", "배달이 완료된 주문이 없습니다.", HttpStatus.BAD_REQUEST),
   ORDER_NOT_FOUND_IN_STORE("ORDER_NOT_FOUND_IN_STORE", "해당 가게의 주문이 아닙니다.", HttpStatus.NOT_FOUND),
+  MISMATCH_STATUS_TEXT("INVALID_ORDER_STATUS", "올바른 상태변경 요청을 입력해야합니다.", HttpStatus.NOT_FOUND),
   INVALID_ORDER_STATUS_TRANSITION("INVALID_ORDER_STATUS_TRANSITION", "유효하지 않은 주문 상태 변경입니다.",
       HttpStatus.BAD_REQUEST),
   INVALID_QUANTITY("INVALID_QUANTITY", "수량은 1 이상의 양수여야 합니다.", HttpStatus.BAD_REQUEST),
-
+  CANNOT_ORDER_OWN_STORE("CANNOT_ORDER_OWN_STORE", "사장님은 자신의 가게에 주문 할 수 없습니다",
+      HttpStatus.BAD_REQUEST),
 
   // 리뷰 관련 에러 코드
   REVIEW_NOT_FOUND("REVIEW_NOT_FOUND", "요청자의 리뷰를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),

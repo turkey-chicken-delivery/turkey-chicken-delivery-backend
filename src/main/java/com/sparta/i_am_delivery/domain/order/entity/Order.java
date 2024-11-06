@@ -55,6 +55,7 @@ public class Order extends TimeStamped {
 
   // 주문 상태
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private OrderStatus status;
 
   @Builder
