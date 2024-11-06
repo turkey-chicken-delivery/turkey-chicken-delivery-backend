@@ -19,6 +19,7 @@ import com.sparta.i_am_delivery.store.dto.response.StorePageReadResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreUpdateResponseDto;
 import com.sparta.i_am_delivery.user.enums.UserType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
