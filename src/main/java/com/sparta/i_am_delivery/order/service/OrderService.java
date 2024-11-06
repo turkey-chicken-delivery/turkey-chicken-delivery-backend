@@ -151,7 +151,7 @@ public class OrderService {
     }
     // 요청한 상태가 CANCELED 인지 확인
     if (!orderStatusRequestDto.getOrderStatus().equals(OrderStatus.CANCELED)) {
-      throw new CustomException(ErrorCode.INVALID_ORDER_STATUS_TRANSITION);
+      throw new CustomException(ErrorCode.MISMATCH_STATUS_TEXT);
     }
     //주문 상태 변경
     order.updateStatus(OrderStatus.CANCELED);
