@@ -1,4 +1,4 @@
-package com.sparta.i_am_delivery.user.dto.request;
+package com.sparta.i_am_delivery.user.dto.response;
 
 import com.sparta.i_am_delivery.menu.dto.info.MenuInfo;
 import com.sparta.i_am_delivery.order.enums.OrderStatus;
@@ -15,6 +15,7 @@ public class OrderPageReadResponseDto {
   private StoreInfo storeInfo;
   private MenuInfo menuInfo;
   private Long totalPrice;
+  private Integer quantity;
   private OrderStatus status;
   private LocalDateTime modifiedAt;
 
@@ -25,14 +26,14 @@ public class OrderPageReadResponseDto {
       MenuInfo menuInfo,
       Long totalPrice,
       OrderStatus status,
-      LocalDateTime modifiedAt) {
+      LocalDateTime modifiedAt,
+      Integer quantity) {
     this.orderId = orderId;
     this.storeInfo = storeInfo;
     this.menuInfo = menuInfo;
     this.totalPrice = totalPrice;
     this.status = status;
     this.modifiedAt = modifiedAt;
+    this.quantity = quantity;
   }
-
-
 }
