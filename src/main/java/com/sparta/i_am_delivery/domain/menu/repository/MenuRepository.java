@@ -1,6 +1,8 @@
 package com.sparta.i_am_delivery.domain.menu.repository;
 
 import com.sparta.i_am_delivery.domain.menu.entity.Menu;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +17,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
   void deleteByStoreId(Long storeId);
 
   List<Menu> findAllByStoreId(Long storeId);
+
+  Page<Menu> findAllByStoreId(Long storeId, Pageable pageable);
 }
