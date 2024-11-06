@@ -31,7 +31,6 @@ public class StoreController {
     return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
   }
 
-
   @GetMapping("/{id}")
   public ResponseEntity<StoreDetailResponseDto> getDetailStore(@PathVariable Long id) {
     StoreDetailResponseDto store = storeService.getDetailStore(id);
@@ -57,9 +56,8 @@ public class StoreController {
 
   @GetMapping()
   public ResponseEntity<Page<StorePageReadResponseDto>> getAllStores(
-      @RequestParam(defaultValue = "1") int pageNo,
-      @RequestParam(defaultValue = "10") int pageSize) {
-    Page<StorePageReadResponseDto> storePage = storeService.getAllStores(pageNo, pageSize);
+      @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+    Page<StorePageReadResponseDto> storePage = storeService.getAllStores(page, size);
     return ResponseEntity.status(HttpStatus.OK).body(storePage);
   }
 }

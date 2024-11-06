@@ -15,10 +15,12 @@ import com.sparta.i_am_delivery.store.dto.request.StoreCreateRequestDto;
 import com.sparta.i_am_delivery.store.dto.request.StoreUpdateRequestDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreCreateResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreDetailResponseDto;
+import com.sparta.i_am_delivery.store.dto.response.StorePageReadResponseDto;
 import com.sparta.i_am_delivery.store.dto.response.StoreUpdateResponseDto;
 import com.sparta.i_am_delivery.user.enums.UserType;
-import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,10 +75,11 @@ public class StoreService {
   }
 
   public StoreDetailResponseDto getDetailStore(Long id) {
-    Store store = storeRepository.findById(id)
-        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+    Store store =
+        storeRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
-    // select * from Menu where storeId = '굽네치킨(1) and price = 5000 ;
     List<Menu> menus = menuRepository.findAllByStoreId(id);
     return new StoreDetailResponseDto(store, menus);
   }
@@ -122,8 +125,8 @@ public class StoreService {
 
   }
 
-  public Page<StorePageReadResponseDto> getAllStores(int pageNo, int pageSize) {
-    PageRequest pageRequest = PageRequest.of(pageNo-1, pageSize, Sort.Direction.DESC, "modifiedAt");
+  public Page<StorePageReadResponseDto> getAllStores(int page, int size) {
+    PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.Direction.DESC, "modifiedAt");
     Page<Store> stores = storeRepository.findAll(pageRequest);
     return stores.map(
         store ->
