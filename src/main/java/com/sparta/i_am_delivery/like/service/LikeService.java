@@ -42,4 +42,13 @@ public class LikeService {
             .build();
     return LikeAddResponseDto.builder().id(like.getId()).storeInfo(storeInfo).build();
   }
+
+  @Transactional
+  public void removeToStoreLike(Long id, User user) {
+    Like like =
+        likeRepository
+            .findByIdAndUserId(id, user.getId())
+            .orElseThrow(() -> new CustomException(ErrorCode.LIKE_NOT_FOUND));
+    likeRepository.delete(like);
+  }
 }
