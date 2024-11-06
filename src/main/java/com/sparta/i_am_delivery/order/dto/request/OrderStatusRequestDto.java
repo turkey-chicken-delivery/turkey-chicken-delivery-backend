@@ -12,9 +12,6 @@ public class OrderStatusRequestDto {
 
   @NotNull(message = "변경할 주문 상태를 입력해주세요.")
   @ValidEnum(enumClass = OrderStatus.class, message = "알맞은 주문 상태를 입력해주세요")
-  private OrderStatus orderStatus;
+  private String orderStatus;
 
-  public OrderStatusRequestDto(@NotNull OrderStatus orderStatus) {
-    this.orderStatus = orderStatus;
-  }
 }

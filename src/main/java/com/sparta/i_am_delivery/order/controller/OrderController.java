@@ -5,14 +5,13 @@ import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.order.dto.request.OrderRequestDto;
 import com.sparta.i_am_delivery.order.dto.request.OrderStatusRequestDto;
 import com.sparta.i_am_delivery.order.dto.response.CreateResponseDto;
+import com.sparta.i_am_delivery.order.dto.response.DeliveryStatusResponseDto;
 import com.sparta.i_am_delivery.order.dto.response.UpdatedResponseDto;
 import com.sparta.i_am_delivery.order.service.OrderService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -53,15 +52,16 @@ public class OrderController {
   }
 
   // 주문 상태 변경 (사장님 전용)
-  @PatchMapping("/{storeId}/orders/{orderId}/owner")
-  public ResponseEntity<UpdatedResponseDto> updateOrderStatus(
+  @PutMapping("/{storeId}/orders/{orderId}/owner")
+  public ResponseEntity<DeliveryStatusResponseDto> updateOrderStatus(
       @PathVariable Long storeId,
       @PathVariable Long orderId,
       @Valid @RequestBody OrderStatusRequestDto orderStatusRequestDto,
-      HttpServletRequest request
+      @AuthUser User user
   ) {
-    Long ownerId = (Long) request.getAttribute("ownerId");
-    UpdatedResponseDto responseDto = orderService.updateOrderStatus(ownerId, storeId, orderId,
+
+    DeliveryStatusResponseDto responseDto = orderService.updateOrderStatus(user.getId(), storeId,
+        orderId,
         orderStatusRequestDto);
     return ResponseEntity.ok(responseDto);
   }

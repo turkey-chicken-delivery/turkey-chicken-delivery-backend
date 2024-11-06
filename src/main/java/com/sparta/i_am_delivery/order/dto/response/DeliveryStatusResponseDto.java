@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UpdatedResponseDto {
+public class DeliveryStatusResponseDto {
 
-  private Long orderId;
+  private Long id;
   private OrderStatus orderStatus;
   private LocalDateTime modifiedAt;
 
   @Builder
-  public UpdatedResponseDto(Long orderId, OrderStatus orderStatus, LocalDateTime modifiedAt) {
-    this.orderId = orderId;
+  public DeliveryStatusResponseDto(Long id, OrderStatus orderStatus, LocalDateTime modifiedAt) {
+    this.id = id;
     this.orderStatus = orderStatus;
     this.modifiedAt = modifiedAt;
   }
