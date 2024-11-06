@@ -1,4 +1,4 @@
-package com.sparta.i_am_delivery.order.dto.orderstatus;
+package com.sparta.i_am_delivery.order.dto.request;
 
 import com.sparta.i_am_delivery.order.enums.OrderStatus;
 import jakarta.validation.constraints.NotNull;
