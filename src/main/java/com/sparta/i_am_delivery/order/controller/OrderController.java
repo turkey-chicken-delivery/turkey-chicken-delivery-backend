@@ -6,12 +6,14 @@ import com.sparta.i_am_delivery.order.dto.request.OrderRequestDto;
 import com.sparta.i_am_delivery.order.dto.request.OrderStatusRequestDto;
 import com.sparta.i_am_delivery.order.dto.response.CreateResponseDto;
 import com.sparta.i_am_delivery.order.dto.response.DeliveryStatusResponseDto;
+import com.sparta.i_am_delivery.order.dto.response.OrderDetailResponseDto;
 import com.sparta.i_am_delivery.order.dto.response.UpdatedResponseDto;
 import com.sparta.i_am_delivery.order.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,14 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/stores")
+@RequestMapping("/api/stores/{storeId}")
 @RequiredArgsConstructor
 public class OrderController {
 
   private final OrderService orderService;
 
   // 주문 생성
-  @PostMapping("/{storeId}/orders")
+  @PostMapping("/orders")
   public ResponseEntity<CreateResponseDto> createOrder(
       @PathVariable Long storeId,
       @Valid @RequestBody OrderRequestDto orderRequestDto,
@@ -39,7 +41,7 @@ public class OrderController {
   }
 
   // 주문 상태 변경 (유저 전용, PENDING 상태일 때만 CANCELED로 변경 가능)
-  @PutMapping("/{storeId}/orders/{orderId}")
+  @PutMapping("/orders/{orderId}")
   public ResponseEntity<UpdatedResponseDto> cancelOrder(
       @PathVariable Long storeId,
       @PathVariable Long orderId,
@@ -52,7 +54,7 @@ public class OrderController {
   }
 
   // 주문 상태 변경 (사장님 전용)
-  @PutMapping("/{storeId}/orders/{orderId}/owner")
+  @PutMapping("/orders/{orderId}/owner")
   public ResponseEntity<DeliveryStatusResponseDto> updateOrderStatus(
       @PathVariable Long storeId,
       @PathVariable Long orderId,
@@ -65,4 +67,15 @@ public class OrderController {
         orderStatusRequestDto);
     return ResponseEntity.ok(responseDto);
   }
+
+  @GetMapping("/orders/{id}")
+  public ResponseEntity<OrderDetailResponseDto> getOrder(@PathVariable Long storeId,
+      @PathVariable Long id,
+      @AuthUser User user) {
+
+    OrderDetailResponseDto order = orderService.getOrder(id, user);
+    
+    return ResponseEntity.status(HttpStatus.OK).body(order);
+  }
+
 }
