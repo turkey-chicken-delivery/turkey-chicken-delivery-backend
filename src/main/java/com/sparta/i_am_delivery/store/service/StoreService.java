@@ -30,7 +30,7 @@ public class StoreService {
       throw new CustomException(ErrorCode.INVALID_OWNER);
     }
 
-    int storeCount = storeRepository.countByOwner(user);
+    int storeCount = storeRepository.countByOwnerAndDeletedAtIsNull(user);
     if (storeCount >= 3) {
       throw new CustomException(ErrorCode.TOO_MANY_STORE);
     }
@@ -73,4 +73,22 @@ public class StoreService {
 
     return new StoreUpdateResponseDto(updateStore);
   }
+
+  @Transactional
+  public Long deleteStore(Long id, User user) {
+    Store deleteStore = storeRepository.findById(id)
+        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+
+    if (!deleteStore.getOwner().getId().equals(user.getId())) {
+      throw new CustomException(ErrorCode.INVALID_OWNER);
+    }
+    deleteStore.delete();
+    deleteStore.updateStoreStatus();
+    storeRepository.save(deleteStore);
+
+    return id;
+  }
+
+
 }
