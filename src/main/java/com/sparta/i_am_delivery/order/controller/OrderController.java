@@ -2,8 +2,8 @@ package com.sparta.i_am_delivery.order.controller;
 
 import com.sparta.i_am_delivery.common.annotation.AuthUser;
 import com.sparta.i_am_delivery.domain.user.entity.User;
-import com.sparta.i_am_delivery.order.dto.orderstatus.OrderStatusRequestDto;
 import com.sparta.i_am_delivery.order.dto.request.OrderRequestDto;
+import com.sparta.i_am_delivery.order.dto.request.OrderStatusRequestDto;
 import com.sparta.i_am_delivery.order.dto.response.OrderResponseDto;
 import com.sparta.i_am_delivery.order.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
