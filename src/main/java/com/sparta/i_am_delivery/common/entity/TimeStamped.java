@@ -21,12 +21,13 @@ public abstract class TimeStamped {
   @Temporal(TemporalType.TIMESTAMP)
   private LocalDateTime modifiedAt;
 
+
   @Column
   @Temporal(TemporalType.TIMESTAMP)
   private LocalDateTime deletedAt;
 
-  // 삭제일자 생성 메소드
   public void delete() {
     this.deletedAt = LocalDateTime.now();
   }
 }
+

@@ -24,16 +24,25 @@ public class StoreController {
 
     StoreCreateResponseDto responseDto = storeService.createStore(requestDto, user);
 
-
     return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
   }
 
+
+  @GetMapping()
+
   @PutMapping("/{id}")
-  public ResponseEntity<StoreUpdateResponseDto> updateStore(@PathVariable Long id, @AuthUser User user, @RequestBody StoreUpdateRequestDto requestDto) {
+  public ResponseEntity<StoreUpdateResponseDto> updateStore(@Valid @PathVariable Long id, @AuthUser User user, @RequestBody StoreUpdateRequestDto requestDto) {
 
     StoreUpdateResponseDto responseDto = storeService.updateStore(id, requestDto, user);
 
     return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 
+
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteStore(@Valid @PathVariable Long id, @AuthUser User user) {
+    storeService.deleteStore(id, user);
+    return ResponseEntity.noContent().build();
   }
 }

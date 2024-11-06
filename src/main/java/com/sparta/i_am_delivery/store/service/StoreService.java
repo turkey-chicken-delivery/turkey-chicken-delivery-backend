@@ -2,6 +2,11 @@ package com.sparta.i_am_delivery.store.service;
 
 import com.sparta.i_am_delivery.common.exception.CustomException;
 import com.sparta.i_am_delivery.common.exception.ErrorCode;
+import com.sparta.i_am_delivery.domain.comment.repository.CommentRepository;
+import com.sparta.i_am_delivery.domain.like.repository.LikeRepository;
+import com.sparta.i_am_delivery.domain.menu.repository.MenuRepository;
+import com.sparta.i_am_delivery.domain.order.repository.OrderRepository;
+import com.sparta.i_am_delivery.domain.review.repository.ReviewRepository;
 import com.sparta.i_am_delivery.domain.store.entity.Store;
 import com.sparta.i_am_delivery.domain.store.repository.StoreRepository;
 import com.sparta.i_am_delivery.domain.user.entity.User;
@@ -20,8 +25,12 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class StoreService {
 
+  private final CommentRepository commentRepository;
   private final StoreRepository storeRepository;
-
+  private final OrderRepository orderRepository;
+  private final MenuRepository menuRepository;
+  private final ReviewRepository reviewRepository;
+  private final LikeRepository likeRepository;
 
   @Transactional
   public StoreCreateResponseDto createStore(StoreCreateRequestDto requestDto, User user) {
@@ -30,7 +39,7 @@ public class StoreService {
       throw new CustomException(ErrorCode.INVALID_OWNER);
     }
 
-    int storeCount = storeRepository.countByOwner(user);
+    int storeCount = storeRepository.countByOwnerAndDeletedAtIsNull(user);
     if (storeCount >= 3) {
       throw new CustomException(ErrorCode.TOO_MANY_STORE);
     }
@@ -73,4 +82,28 @@ public class StoreService {
 
     return new StoreUpdateResponseDto(updateStore);
   }
+
+  @Transactional
+  public void deleteStore(Long id, User user) {
+    Store deleteStore = storeRepository.findById(id)
+        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+
+    if (!deleteStore.getOwner().getId().equals(user.getId())) {
+      throw new CustomException(ErrorCode.INVALID_OWNER);
+    }
+    deleteStore.delete();
+    deleteStore.updateStoreStatus();
+
+    storeRepository.save(deleteStore);
+    commentRepository.deleteByStoreId(id);
+    orderRepository.deleteByStoreId(id);
+    menuRepository.deleteByStoreId(id);
+    reviewRepository.deleteByStoreId(id);
+    likeRepository.deleteByStoreId(id);
+
+
+  }
+
+
 }
