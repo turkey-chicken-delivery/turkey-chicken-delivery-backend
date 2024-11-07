@@ -26,7 +26,10 @@ public class MenuService {
   private final StoreRepository storeRepository;
 
   public MenuResponseDto createMenu(Long storeId, MenuRequestDto requestDto, User user) {
-    Store store = storeRepository.findById(storeId).orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+    Store store =
+        storeRepository
+            .findById(storeId)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
     validateOwner(store, user);
 
@@ -39,7 +42,10 @@ public class MenuService {
   }
 
   public MenuResponseDto updateMenu(Long id, MenuRequestDto requestDto, Long storeId, User user) {
-    Menu menu = menuRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
+    Menu menu =
+        menuRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
 
     validateOwner(menu.getStore(), user);
 
@@ -50,11 +56,30 @@ public class MenuService {
     return new MenuResponseDto(menu);
   }
 
+  public void deleteMenu(Long id, User user) {
+    Menu menu =
+        menuRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
+    validateOwner(menu.getStore(), user);
+    menuRepository.delete(menu);
+  }
+
   public Page<MenuPageReadResponseDto> getAllStoresMenu(Long storeId, int page, int size) {
     PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.Direction.DESC, "modifiedAt");
-    Store store = storeRepository.findById(storeId).orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+    Store store =
+        storeRepository
+            .findById(storeId)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
     Page<Menu> menus = menuRepository.findAllByStoreId(store.getId(), pageRequest);
-    return menus.map(menu -> MenuPageReadResponseDto.builder().id(menu.getId()).name(menu.getName()).price(menu.getPrice()).createdAt(menu.getCreatedAt()).build());
+    return menus.map(
+        menu ->
+            MenuPageReadResponseDto.builder()
+                .id(menu.getId())
+                .name(menu.getName())
+                .price(menu.getPrice())
+                .createdAt(menu.getCreatedAt())
+                .build());
   }
 
   private void validateOwner(Store store, User user) {
@@ -69,6 +94,4 @@ public class MenuService {
       throw new CustomException(ErrorCode.DUPLICATE_MENU_NAME);
     }
   }
-
-
 }

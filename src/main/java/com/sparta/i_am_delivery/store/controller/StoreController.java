@@ -24,7 +24,7 @@ public class StoreController {
 
   @PostMapping()
   public ResponseEntity<StoreCreateResponseDto> createStore(
-      @Valid @AuthUser User user, @RequestBody StoreCreateRequestDto requestDto) {
+      @AuthUser User user, @Valid @RequestBody StoreCreateRequestDto requestDto) {
 
     StoreCreateResponseDto responseDto = storeService.createStore(requestDto, user);
 
@@ -39,9 +39,9 @@ public class StoreController {
 
   @PutMapping("/{id}")
   public ResponseEntity<StoreUpdateResponseDto> updateStore(
-      @Valid @PathVariable Long id,
+      @PathVariable Long id,
       @AuthUser User user,
-      @RequestBody StoreUpdateRequestDto requestDto) {
+      @Valid @RequestBody StoreUpdateRequestDto requestDto) {
 
     StoreUpdateResponseDto responseDto = storeService.updateStore(id, requestDto, user);
 

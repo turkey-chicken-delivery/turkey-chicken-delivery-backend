@@ -38,16 +38,19 @@ public class ReviewService {
   private final CommentRepository commentRepository;
 
   @Transactional
-  public ReviewCreationResponseDto createReview(User user, Long storeId, Long orderId,
-      ReviewRequestDto reviewRequestDto) {
+  public ReviewCreationResponseDto createReview(
+      User user, Long storeId, Long orderId, ReviewRequestDto reviewRequestDto) {
 
     // 가게 조회
-    Store store = storeRepository.findById(storeId)
-        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+    Store store =
+        storeRepository
+            .findById(storeId)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
-    Order order = orderRepository.findByIdAndStatus(orderId,
-            OrderStatus.COMPLETED)
-        .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_COMPLETED));
+    Order order =
+        orderRepository
+            .findByIdAndStatus(orderId, OrderStatus.COMPLETED)
+            .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_COMPLETED));
 
     // 이미 해당 유저가 리뷰를 작성했는지 확인
     boolean commentExists = reviewRepository.existsByOrderId(order.getId());
@@ -56,48 +59,57 @@ public class ReviewService {
     }
 
     Review review = new Review();
-    review.createReview(user, store, order, reviewRequestDto.getComment(),
-        reviewRequestDto.getStar());
+    review.createReview(
+        user, store, order, reviewRequestDto.getContent(), reviewRequestDto.getStar());
     reviewRepository.save(review);
 
     return new ReviewCreationResponseDto(review);
   }
 
   @Transactional
-  public ReviewUpdateResponseDto updateReview(User user, Long reviewId,
-      ReviewRequestDto reviewRequestDto) {
+  public ReviewUpdateResponseDto updateReview(
+      User user, Long reviewId, ReviewRequestDto reviewRequestDto) {
 
     // 리뷰 존재 여부 및 작성자 확인
-    Review review = reviewRepository.findByIdAndUserId(reviewId, user.getId())
-        .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));  // 리뷰 존재 유무 확인
+    Review review =
+        reviewRepository
+            .findByIdAndUserId(reviewId, user.getId())
+            .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND)); // 리뷰 존재 유무 확인
 
-    review.updateReview(reviewRequestDto.getComment(), reviewRequestDto.getStar());
+    review.updateReview(reviewRequestDto.getContent(), reviewRequestDto.getStar());
     return new ReviewUpdateResponseDto(review);
   }
 
   public ReviewListResponseDto getAllReview(Long storeId, int page) {
     // 페이지네이션을 위한 Pageable 객체 생성
-    Pageable pageable = PageRequest.of(page - 1, 10,
-        Sort.by(Sort.Order.desc("createdAt"))); // 페이지 크기 10, 페이지 번호는 0부터 시작
+    Pageable pageable =
+        PageRequest.of(
+            page - 1, 10, Sort.by(Sort.Order.desc("createdAt"))); // 페이지 크기 10, 페이지 번호는 0부터 시작
 
     // Store 존재 여부 확인
-    Store store = storeRepository.findById(storeId)
-        .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+    Store store =
+        storeRepository
+            .findById(storeId)
+            .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
     // 해당 가게에 대한 리뷰를 페이지 단위로 조회
     Page<Review> reviewPage = reviewRepository.findByStore(store, pageable);
 
     // 리뷰 목록을 DTO로 변환
-    List<ReviewResponseDto> reviewResponseDtos = reviewPage.getContent().stream()
-        .map(review -> {
-          // 각 리뷰에 대해 댓글을 조회 (한 개의 댓글만 존재)
-          CommentResponseDto commentResponseDto = commentRepository.findByReviewId(review.getId())
-              .map(CommentResponseDto::new)
-              .orElse(null); // 댓글이 없을 수도 있으므로 null 처리
+    List<ReviewResponseDto> reviewResponseDtos =
+        reviewPage.getContent().stream()
+            .map(
+                review -> {
+                  // 각 리뷰에 대해 댓글을 조회 (한 개의 댓글만 존재)
+                  CommentResponseDto commentResponseDto =
+                      commentRepository
+                          .findByReviewId(review.getId())
+                          .map(CommentResponseDto::new)
+                          .orElse(null); // 댓글이 없을 수도 있으므로 null 처리
 
-          return new ReviewResponseDto(review, commentResponseDto);
-        })
-        .collect(Collectors.toList());
+                  return new ReviewResponseDto(review, commentResponseDto);
+                })
+            .collect(Collectors.toList());
 
     int totalPages = reviewPage.getTotalPages();
 
@@ -107,11 +119,15 @@ public class ReviewService {
   @Transactional
   public void deleteReview(Long storeId, Long id, User user) {
 
-    Review review = reviewRepository.findById(id)
-        .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
+    Review review =
+        reviewRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
-    Comment comment = commentRepository.findByReviewId(review.getId())
-        .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+    Comment comment =
+        commentRepository
+            .findByReviewId(review.getId())
+            .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
     if (!review.getStore().getId().equals(storeId)) {
       throw new CustomException(ErrorCode.COMMENT_NOT_BELONG_TO_STORE);
@@ -123,5 +139,4 @@ public class ReviewService {
     commentRepository.delete(comment);
     reviewRepository.delete(review);
   }
-
 }
