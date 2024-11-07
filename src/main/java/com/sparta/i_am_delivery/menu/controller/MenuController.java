@@ -1,8 +1,6 @@
 package com.sparta.i_am_delivery.menu.controller;
 
 import com.sparta.i_am_delivery.common.annotation.AuthUser;
-import com.sparta.i_am_delivery.common.exception.CustomException;
-import com.sparta.i_am_delivery.common.exception.ErrorCode;
 import com.sparta.i_am_delivery.domain.user.entity.User;
 import com.sparta.i_am_delivery.menu.dto.request.MenuRequestDto;
 import com.sparta.i_am_delivery.menu.dto.response.MenuPageReadResponseDto;
@@ -24,9 +22,9 @@ public class MenuController {
 
   @PostMapping("/menus")
   public ResponseEntity<MenuResponseDto> createMenu(
-      @Valid @AuthUser User user,
+      @AuthUser User user,
       @PathVariable Long storeId,
-      @RequestBody MenuRequestDto requestDto) {
+      @Valid @RequestBody MenuRequestDto requestDto) {
     MenuResponseDto menu = menuService.createMenu(storeId, requestDto, user);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(menu);
@@ -36,7 +34,7 @@ public class MenuController {
   public ResponseEntity<MenuResponseDto> updateMenu(
       @PathVariable Long Id,
       @AuthUser User user,
-      @RequestBody MenuRequestDto requestDto,
+      @Valid @RequestBody MenuRequestDto requestDto,
       @PathVariable Long storeId) {
     MenuResponseDto menu = menuService.updateMenu(Id, requestDto, storeId, user);
 
