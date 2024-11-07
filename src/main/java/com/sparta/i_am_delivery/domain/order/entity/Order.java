@@ -73,4 +73,9 @@ public class Order extends TimeStamped {
   public void updateStatus(OrderStatus newStatus) {
     this.status = newStatus;
   }
+
+  // 소프트 삭제 메서드
+  public void softDelete() {
+    this.delete();
+  }
 }

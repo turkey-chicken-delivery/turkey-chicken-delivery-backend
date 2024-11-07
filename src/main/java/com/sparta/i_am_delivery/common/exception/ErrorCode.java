@@ -1,6 +1,5 @@
 package com.sparta.i_am_delivery.common.exception;
 
-import org.springframework.http.HttpStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -54,6 +53,8 @@ public enum ErrorCode {
       HttpStatus.BAD_REQUEST),
   INVALID_QUANTITY("INVALID_QUANTITY", "수량은 1 이상의 양수여야 합니다.", HttpStatus.BAD_REQUEST),
   CANNOT_ORDER_OWN_STORE("CANNOT_ORDER_OWN_STORE", "사장님은 자신의 가게에 주문 할 수 없습니다",
+      HttpStatus.BAD_REQUEST),
+  INVALID_ORDER_STATUS_FOR_DELETION("INVALID_ORDER_STATUS_FOR_DELETION", "주문이 배달완료 되지않았습니다.",
       HttpStatus.BAD_REQUEST),
   // 리뷰 관련 에러 코드
   REVIEW_NOT_FOUND("REVIEW_NOT_FOUND", "요청자의 리뷰를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
