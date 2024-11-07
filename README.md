@@ -1,5 +1,4 @@
 <div align="center">
-수정중  
 
 ![KakaoTalk_20241107_092336426](https://github.com/user-attachments/assets/4b7c9fca-bff6-42b5-a49c-e726ce7ce72f)
 
@@ -244,12 +243,10 @@
 ## Application 기능 구현
 https://documenter.getpostman.com/view/38557957/2sAY518fJi
 
-## 회고
+## 짧은 회고
 ![001](https://github.com/user-attachments/assets/f225ab37-58d0-4c3d-b0ad-e0ecbbcef466)
 
-
-
 ## Application 핵심 기능 시연 영상
-
+추가 예정.
 
 </div>
