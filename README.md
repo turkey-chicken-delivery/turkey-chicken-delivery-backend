@@ -243,10 +243,11 @@
 ## Application 기능 구현
 https://documenter.getpostman.com/view/38557957/2sAY518fJi
 
-## 짧은 회고
-![001](https://github.com/user-attachments/assets/f225ab37-58d0-4c3d-b0ad-e0ecbbcef466)
-
 ## Application 핵심 기능 시연 영상
 추가 예정.
+
+## 짧은 회고
+![제목을-입력해주세요_-001](https://github.com/user-attachments/assets/470d69f5-9ae3-4f10-9ee4-51dfe2e9e603)
+
 
 </div>
