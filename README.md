@@ -233,6 +233,8 @@
                   └─ validator
                      └─ PassWordValidatorTest.java
 ```
+<div align="center">
+
 
 ## 개체 관계도 (ERD)
 
@@ -250,4 +252,4 @@ https://documenter.getpostman.com/view/38557957/2sAY518fJi
 ## Application 핵심 기능 시연 영상
 
 
-
+</div>
