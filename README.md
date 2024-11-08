@@ -241,11 +241,7 @@
 ## Application 기능 구현
 https://documenter.getpostman.com/view/38557957/2sAY518fJi
 
-## Application 핵심 기능 시연 영상
-추가 예정.
-
-## 짧은 회고
-![제목을-입력해주세요_-001](https://github.com/user-attachments/assets/470d69f5-9ae3-4f10-9ee4-51dfe2e9e603)
-
+## KPT 회고
+https://www.figma.com/board/8TFnkC0qFH50boAqWE1Cyl/7%EB%A9%B4%EC%A1%B0---%ED%9A%8C%EA%B3%A0?node-id=0-1&node-type=canvas&t=0eRl4ghEGk1zQD77-0
 
 </div>
